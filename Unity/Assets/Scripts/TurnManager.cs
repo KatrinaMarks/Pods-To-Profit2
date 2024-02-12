@@ -678,6 +678,62 @@ public class TurnManager : MonoBehaviour
       }
     }
 
+    /* making new function for setting the tilling when a tilling button is pressed 
+     * I'm copy pasting some of the code that was in preplantConfirm
+     * Doing similar for seed type. */
+
+     public void preplantTillingConfirmation(int tillType)
+     {
+        /* If no till */
+        if (tillType == 1)
+        {
+          perSeedBasePlantPrice *= notillPriceModifier;
+          yieldPercent *= notillYieldModifier;
+          tillType = 1;
+          updatePerks("No Tilling");
+        }
+        /* If Subsoil tilling */
+        if (tillType == 2)
+        {
+          perSeedBasePlantPrice *= subsoilPriceModifier;
+          yieldPercent *= subsoilYieldModifier;
+          tillType = 2;
+          updatePerks("Subsoiling");
+        }
+        /* If conventional tilling */
+        if (tillType == 5)
+        {
+          tillType = 5;
+          updatePerks("conventional Tilling");
+        }
+     }
+
+     public void preplantSeedConfirmation(int seedType)
+     {
+      /* If organic seeds */
+      if (seedType == 1)
+      {
+        /* don't know here yet, bc idk about price, yield percent, and perks... */
+      }
+      /* If conventional seeds */
+      if (seedType == 2)
+      {
+        /* don't know here yet, bc idk about price, yield percent, and perks... */
+      }
+      /* If GMO seeds */
+      if (seedType == 3)
+      {
+        perSeedBasePlantPrice *= gmoPriceModifier;
+        yieldPercent *= gmoYieldModifier;
+        updatePerks("GMOs");
+      }
+     }
+
+     public void preplantFertilizerConfirmation(int fertType)
+     {
+      
+     }
+
     /* fertilizerToggles list is [fertOrg, irrOverhead, irrFlood]
      * We can infer the other toggles based on these
      */
