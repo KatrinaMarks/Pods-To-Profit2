@@ -32,6 +32,13 @@ public class TurnManager : MonoBehaviour
     public GameObject[] turnPanels;
     public InventoryManager inventory;
 
+    /* 
+     * There are alredy a bunch of weather variables included in the Cotyledon stage,
+     * (is this the only stage where we will have weather events?), but there is no
+     * overall temperature variable, so I added that here. May change this later
+     */
+    public int temp = 80;
+    public TMP_Text tempText;
     public int years = 1;
 
     public TMP_Text perks;
@@ -137,6 +144,8 @@ public class TurnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+      // tempText.text = temp + "°";
+      tempText.text = temp.ToString() + "°";
       current = TurnPhase.Preplant;
       activeTurn();
       phaseText.text = current.ToString();
