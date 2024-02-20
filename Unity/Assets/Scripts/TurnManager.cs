@@ -26,6 +26,7 @@ using TMPro;
  */
 public class TurnManager : MonoBehaviour
 {
+    public SaveData save;
     public HexMapEditor editor;
     public HexGrid grid;
     public TurnPhase current;
@@ -147,6 +148,8 @@ public class TurnManager : MonoBehaviour
       sale.interactable = false;
 
       ftext.SetActive(false);
+
+      //save.basic_data.cash = 5000;
     }
 
     void Reset()
@@ -552,6 +555,16 @@ public class TurnManager : MonoBehaviour
         {
           fertClicked();
         }
+      }
+
+      // KEY BOARD S AND L to Save and load, we also change Behavior to type buttton
+      if(Input.GetKeyDown(KeyCode.S)){
+        save.SaveJson();
+        
+      }
+      if(Input.GetKeyDown(KeyCode.L)){
+        save.LoadJson();
+        
       }
     }
 
