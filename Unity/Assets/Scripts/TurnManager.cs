@@ -39,6 +39,9 @@ public class TurnManager : MonoBehaviour
      */
     public int temp = 80;
     public TMP_Text tempText;
+
+    public tempArrow tmpArw;
+
     public int years = 1;
 
     public TMP_Text perks;
@@ -147,6 +150,8 @@ public class TurnManager : MonoBehaviour
       // tempText.text = temp + "°";
       tempText.text = temp.ToString() + "°";
       current = TurnPhase.Preplant;
+      tmpArw = GameObject.FindGameObjectWithTag("Arrow").GetComponent<tempArrow>();
+      tmpArw.rotateArrow(temp);
       activeTurn();
       phaseText.text = current.ToString();
       perSeedBasePlantPriceReset = perSeedBasePlantPrice;
@@ -545,6 +550,7 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
+      // tmpArw.rotateArrow(temp);
       if(Input.GetMouseButtonDown(0))
       {
         if(rhizoing)
