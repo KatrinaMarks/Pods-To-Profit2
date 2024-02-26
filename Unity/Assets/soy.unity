@@ -6666,37 +6666,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 318983921}
   m_CullTransparentMesh: 1
---- !u!1 &320054786
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 320054787}
-  m_Layer: 0
-  m_Name: Game_State
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &320054787
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 320054786}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1022.90393, y: 785.28046, z: 3.5109725}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &320064321
 GameObject:
   m_ObjectHideFlags: 0
@@ -28258,7 +28227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cec72e0139142ff47bfa1959d4cde69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textures: 000000000100000002000000030000000400000005000000
+  textures: 
   hexGrid: {fileID: 0}
   turnManager: {fileID: 0}
 --- !u!1 &1310315228
@@ -29993,7 +29962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1393175739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31072,7 +31041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f468c95ca90cc4db2979e5e914808c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  save: {fileID: 0}
   editor: {fileID: 1631779698}
   grid: {fileID: 1382423075}
   current: 0
@@ -31097,11 +31065,11 @@ MonoBehaviour:
   yieldPercent: 1
   perPlantSaleAmount: 50
   plants: []
-  tiller: {fileID: 442822038}
-  rhizo: {fileID: 1803546979}
-  pest: {fileID: 49511125}
-  fert: {fileID: 99077398}
-  sale: {fileID: 1833129260}
+  tiller: {fileID: 0}
+  rhizo: {fileID: 0}
+  pest: {fileID: 0}
+  fert: {fileID: 0}
+  sale: {fileID: 0}
   rtext: {fileID: 1152189389}
   ptext: {fileID: 1680412247}
   ftext: {fileID: 676747793}

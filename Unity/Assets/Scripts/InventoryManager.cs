@@ -27,16 +27,16 @@ public class InventoryManager : MonoBehaviour
      */
 
     public enum items {
-      //RHIZO; // rhoizobium
-      //BIOPEST; // bio pesticides
-      //FERT; // fertilzier 
-      //SEED; // seeds
+      RHIZO; // rhoizobium
+      BIOPEST; // bio pesticides
+      FERT; // fertilzier 
+      SEED; // seeds
     }
 
     public enum status {
-      //CON;  // conventional
-      //SUS; // sustainable
-      //ORG; // organic
+      CON;  // conventional
+      SUS; // sustainable
+      ORG; // organic
     }
     public int[][] inventory;
 
