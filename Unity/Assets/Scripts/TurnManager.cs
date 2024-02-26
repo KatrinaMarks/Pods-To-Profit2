@@ -92,6 +92,8 @@ public class TurnManager : MonoBehaviour
     public float biopestYieldModifier = .8f;
     public float biopestInsectModifier = .5f;
     public int biopestAmount = -50;
+    public int fertAmount = -50;
+    public int seedsAmount = -50;
     public float insectChance = .5f;
     public GameObject[] preplantToggles;
 
@@ -189,13 +191,21 @@ public class TurnManager : MonoBehaviour
         case TurnPhase.Preplant:
           switch(index)
           {
-            case 0:
+            case 0: // rhizobium
               inventory.changeMoney(shopPrices[index]);
               inventory.rhizobium += shopAmounts[index];
               break;
-            case 1:
+            case 1: // pesticides
               inventory.changeMoney(shopPrices[index]);
               inventory.pesticides += shopAmounts[index];
+              break;
+            case 2: // seeds
+              inventory.changeMoney(shopPrices[index]);
+              inventory.fert += shopAmounts[index];
+              break;
+            case 3: // fertilizer
+              inventory.changeMoney(shopPrices[index]);
+              inventory.seeds += shopAmounts[index];
               break;
             default:
               break;
@@ -310,6 +320,15 @@ public class TurnManager : MonoBehaviour
           shopPrices[0] = rhizoAmount;
           shopAmounts[1] = 10;
           shopPrices[1] = biopestAmount;
+          /* added these here to avoid an array out of bounds error, will change the prices
+           * and starting amounts for each later -- also probably going to convert both
+           * shop...[] arrays into 2D arrays so account for the three different statuses
+           * (conventional, sustainable, and organic).
+           */
+          shopAmounts[2] = 10;
+          shopPrices[2] = fertAmount;
+          shopAmounts[3] = 10;
+          shopPrices[3] = seedsAmount;
 
           shopButtons[0].GetComponentsInChildren<TMP_Text>()[0].text = "Rhizobium $" + Math.Abs(rhizoAmount);
           shopButtons[1].GetComponentsInChildren<TMP_Text>()[0].text = "Pesticides $" + Math.Abs(biopestAmount);

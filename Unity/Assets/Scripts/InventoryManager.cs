@@ -12,8 +12,10 @@ public class InventoryManager : MonoBehaviour
     public int rhizobium = 0;
     public int pesticides = 0;
     public int fert = 0;
+    public int seeds = 0;
 
     public TMP_Text moneyText;
+    public TMP_Text shopMoneyText;
     public TMP_Text rText;
     public TMP_Text pText;
     public TMP_Text fText;
@@ -24,6 +26,7 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
       moneyText.text = "$" + money;
+      shopMoneyText.text = "$" + money;
       // moneyTextDisplay.text = "$" + money.ToString();
     }
 
@@ -49,6 +52,7 @@ public class InventoryManager : MonoBehaviour
       {
         money += amt;
         moneyText.text = "$" + money;
+        shopMoneyText.text = "$" + money;
         return true;
       }
       return false;
