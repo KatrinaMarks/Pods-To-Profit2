@@ -7,6 +7,19 @@ using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
+    public enum items {
+      RHIZO,    // rhoizobium
+      BIOPEST,  // bio pesticides
+      FERT,     // fertilzier 
+      SEED     // seeds
+    }
+
+    public enum status {
+      CON,  // conventional
+      SUS,  // sustainable
+      ORG  // organic
+    }
+
     public float money = 5000;
     // public Text moneyTextDisplay;
     public int rhizobium = 0;
@@ -14,31 +27,21 @@ public class InventoryManager : MonoBehaviour
     public int fert = 0;
     public int seeds = 0;
 
+    // use a 2D array instead of individual variables to also keep track for the statuses?
+
+    /* 2D array for the inventory, first index is the type of item (seed, fertilizer, etc)
+     * and the second index is the status (conventional, sustainable, organic). I plan on 
+     * using ENUMs for both of these so we don't have to memorize which number corresponds to
+     * which item or status
+     */
+    public int[][] inventory;
+
     public TMP_Text moneyText;
     public TMP_Text shopMoneyText;
     public TMP_Text rText;
     public TMP_Text pText;
     public TMP_Text fText;
 
-    /* 2D array for the inventory, first index is the type of item (seed, fertilizer, etc)
-     * and the second index is the status (conventional, sustainable, organic). I plan on 
-     * making ENUMs for both of these so we don't have to memorize which number corresponds to
-     * which item or status
-     */
-
-    public enum items {
-      RHIZO; // rhoizobium
-      BIOPEST; // bio pesticides
-      FERT; // fertilzier 
-      SEED; // seeds
-    }
-
-    public enum status {
-      CON;  // conventional
-      SUS; // sustainable
-      ORG; // organic
-    }
-    public int[][] inventory;
 
     public bool ownTractor = false;
     public bool brokenTractor = false;
@@ -52,11 +55,11 @@ public class InventoryManager : MonoBehaviour
       /* Do I even need this? Just initializing the inventory array, but it doesn't
        * seem like the old group ever fully initialized the menu...[] arrays in TurnManager
        */
-      for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 3; j++) {
-          inventory[i][j] = 0;
-        }
-      }
+      // for (int i = 0; i < 4; i++) {
+      //   for (int j = 0; j < 3; j++) {
+      //     inventory[i][j] = 0;
+      //   }
+      // }
     }
 
     // Update is called once per frame

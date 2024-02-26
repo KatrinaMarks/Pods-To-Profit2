@@ -1,12 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class toolMenu : MonoBehaviour
 {
     //public Rigidbody2D toolMenuExtension;
-    public bool toggled = false;    // true means collapsed (hidden), false means extended 
+    public GameObject bioPestSlider;
+    public GameObject rhizoSlider;
+    public GameObject fertSlider;
+
+    // true means extended, false means collapsed (hidden)
+    public bool menuBool = true;    
+    public bool bioPestBool = false; 
+    public bool rhizoBool = false; 
+    public bool fertBool = false; 
+    // 0 = bioPest ; 1 = rhizo ; 2 = fert
+    public bool[] invBools;
+    public GameObject[] sliders;
+
+    public int index = 0;
+
     public float moveSpeed = 500;   // simply how fast the tool menu moves up/down
+
+    // public Button rhizoButton;
+    // public Button bioPestButton;
+    // public Button fertButton;
+
     
     /* I have no idea how I got the coordinates for upPos and downPos, but when using 
      * transform.position = upPos or = downPos, these are the coordinates that made them
@@ -26,21 +46,50 @@ public class toolMenu : MonoBehaviour
     void Start()
     {
         // Debug.Log(transform.position);
+        sliders[0] = bioPestSlider;
+        sliders[1] = rhizoSlider;
+        sliders[2] = fertSlider;
+        invBools[0] = false;
+        invBools[1] = false;
+        invBools[2] = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Moves the tool menu extension up/down depending on the status of toggled
-        if (toggled == true && transform.position.y > -62) {
+        // Moves the tool menu extension up/down depending on the status of menuBool
+        if (menuBool == false && transform.position.y > -62) {
             transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
-        } else if (toggled == false && transform.position.y < 248) {
+        } else if (menuBool == true && transform.position.y < 248) {
             transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
         }
+
+        // if (invBools[index] == false && sliders[index].transform.localPosition.x < 1033) {
+        //     sliders[index].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        // } else if (invBools[index] == true && sliders[index].transform.localPosition.x > 595) {
+        //     sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+        // }
     }
 
     public void toggleMenu() {
-        toggled = !toggled;
+        menuBool = !menuBool;
+    }
+
+    public void toggleInventoryBool(int i) {
+        invBools[i] = !invBools[i];
+        index = i;
+    }
+
+    public void toggleBioPest() {
+        bioPestBool = !bioPestBool;
+    }
+
+    public void toggleRhizo() {
+        menuBool = !menuBool;
+    }
+
+    public void toggleFert() {
+        menuBool = !menuBool;
     }
 
 }
