@@ -1047,6 +1047,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1831520315}
+        m_TargetAssemblyTypeName: toolMenu, Assembly-CSharp
+        m_MethodName: toggleInventoryBool
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!222 &49511126
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2490,14 +2502,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 99077400}
-        m_TargetAssemblyTypeName: fertSliderScript, Assembly-CSharp
-        m_MethodName: toggleSlide
-        m_Mode: 1
+      - m_Target: {fileID: 1831520315}
+        m_TargetAssemblyTypeName: toolMenu, Assembly-CSharp
+        m_MethodName: toggleInventoryBool
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -2517,7 +2529,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99077395}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f282d3a95b1857d4f9a27dd13f54eec7, type: 3}
   m_Name: 
@@ -9461,16 +9473,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f1978d785c2ab4386ae864c020f8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bioPestSlider: {fileID: 0}
-  rhizoSlider: {fileID: 0}
-  fertSlider: {fileID: 0}
   menuBool: 1
-  bioPestBool: 0
-  rhizoBool: 0
-  fertBool: 0
   invBools: 
   sliders: []
-  index: 0
   moveSpeed: 5
 --- !u!1 &427466571
 GameObject:
@@ -30880,7 +30885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1393175739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38139,7 +38144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1768566123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39141,14 +39146,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1831520315}
+        m_TargetAssemblyTypeName: toolMenu, Assembly-CSharp
+        m_MethodName: toggleInventoryBool
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -39750,16 +39755,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f1978d785c2ab4386ae864c020f8af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bioPestSlider: {fileID: 740446786}
-  rhizoSlider: {fileID: 1574254216}
-  fertSlider: {fileID: 1566473396}
   menuBool: 1
-  bioPestBool: 0
-  rhizoBool: 0
-  fertBool: 0
-  invBools: 
-  sliders: []
-  index: 0
+  invBools: 000000
+  sliders:
+  - {fileID: 740446786}
+  - {fileID: 1574254216}
+  - {fileID: 1566473396}
   moveSpeed: 500
 --- !u!1 &1833129257
 GameObject:

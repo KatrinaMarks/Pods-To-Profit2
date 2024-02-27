@@ -5,29 +5,14 @@ using UnityEngine.UI;
 
 public class toolMenu : MonoBehaviour
 {
-    //public Rigidbody2D toolMenuExtension;
-    public GameObject bioPestSlider;
-    public GameObject rhizoSlider;
-    public GameObject fertSlider;
-
     // true means extended, false means collapsed (hidden)
     public bool menuBool = true;    
-    public bool bioPestBool = false; 
-    public bool rhizoBool = false; 
-    public bool fertBool = false; 
-    // 0 = bioPest ; 1 = rhizo ; 2 = fert
     public bool[] invBools;
     public GameObject[] sliders;
 
-    public int index = 0;
-
+    int index = 0; // 0 = bioPest ; 1 = rhizo ; 2 = fert
     public float moveSpeed = 500;   // simply how fast the tool menu moves up/down
 
-    // public Button rhizoButton;
-    // public Button bioPestButton;
-    // public Button fertButton;
-
-    
     /* I have no idea how I got the coordinates for upPos and downPos, but when using 
      * transform.position = upPos or = downPos, these are the coordinates that made them
      * match the coordinates they actually needed to be, which are upPos2 and downPos2.
@@ -45,13 +30,7 @@ public class toolMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Debug.Log(transform.position);
-        sliders[0] = bioPestSlider;
-        sliders[1] = rhizoSlider;
-        sliders[2] = fertSlider;
-        invBools[0] = false;
-        invBools[1] = false;
-        invBools[2] = false;
+       
     }
 
     // Update is called once per frame
@@ -60,36 +39,43 @@ public class toolMenu : MonoBehaviour
         // Moves the tool menu extension up/down depending on the status of menuBool
         if (menuBool == false && transform.position.y > -62) {
             transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
+            // set all three to false to close the sliders
+            invBools[0] = false;
+            invBools[1] = false;
+            invBools[2] = false;
         } else if (menuBool == true && transform.position.y < 248) {
             transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
         }
 
-        // if (invBools[index] == false && sliders[index].transform.localPosition.x < 1033) {
-        //     sliders[index].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-        // } else if (invBools[index] == true && sliders[index].transform.localPosition.x > 595) {
-        //     sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
-        // }
+        if (invBools[index] == false) {
+            // close slider at index
+            if (sliders[index].transform.localPosition.x < 1033)    sliders[index].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            // close the other two if still open
+            if (sliders[nextIndex(index)].transform.localPosition.x < 1033)             sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        } else if (invBools[index] == true) {
+            // open slider at index
+            if (sliders[index].transform.localPosition.x > 595) sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            // close the other two if still open
+            if (sliders[nextIndex(index)].transform.localPosition.x < 1033) sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033) sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        }
     }
 
     public void toggleMenu() {
         menuBool = !menuBool;
     }
 
+    // toggles slider at index, turns other two to false so they don't just reopen when Update() runs again
     public void toggleInventoryBool(int i) {
         invBools[i] = !invBools[i];
+        invBools[nextIndex(i)] = false;
+        invBools[nextIndex(nextIndex(i))] = false;
         index = i;
     }
 
-    public void toggleBioPest() {
-        bioPestBool = !bioPestBool;
+    // rotates the index from 0 -> 1 -> 2 -> 0 
+    int nextIndex(int i){ 
+        return (i + 1) % 3;
     }
-
-    public void toggleRhizo() {
-        menuBool = !menuBool;
-    }
-
-    public void toggleFert() {
-        menuBool = !menuBool;
-    }
-
 }
