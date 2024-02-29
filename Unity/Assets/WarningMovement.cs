@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WarningMovement : MonoBehaviour
@@ -19,7 +20,7 @@ public class WarningMovement : MonoBehaviour
         // Call the shake function to shake the warning hexagon
         Shaker.Shake(durationToSet);
 
-        WarningBlock.SetActive(true);
+        //WarningBlock.SetActive(true);
         
     }
 
@@ -27,14 +28,19 @@ public class WarningMovement : MonoBehaviour
     void Update()
     {
         // Slide the hexagon to the left until it reaches desired position
-        if (WarningHexagon.transform.localPosition.x > -225) {
+        if (WarningHexagon.transform.localPosition.x > -272) {
             WarningHexagon.transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            if(WarningHexagon.transform.localPosition.x < -150) {
+                WarningBlock.SetActive(true);
+            }
         }    
 
         // Slide the warning message to the right until it reached desired position
-        if (WarningBlock.transform.localPosition.x < 200) {
+        if(WarningBlock.activeInHierarchy) {
+        if (WarningBlock.transform.localPosition.x < 210) {
             WarningBlock.transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-        }    
+        }  
+        }  
             
         
     }
