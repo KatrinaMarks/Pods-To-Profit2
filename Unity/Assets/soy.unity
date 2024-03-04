@@ -780,7 +780,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 1831520315}
         m_TargetAssemblyTypeName: toolMenu, Assembly-CSharp
         m_MethodName: toggleInventoryBool
@@ -2235,7 +2235,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 1831520315}
         m_TargetAssemblyTypeName: toolMenu, Assembly-CSharp
         m_MethodName: toggleInventoryBool
@@ -8758,6 +8758,7 @@ MonoBehaviour:
   menuBool: 1
   invBools: 
   sliders: []
+  inventory: {fileID: 0}
   moveSpeed: 5
 --- !u!1 &442822035
 GameObject:
@@ -14577,7 +14578,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1033, y: 130}
+  m_AnchoredPosition: {x: 1035, y: 130}
   m_SizeDelta: {x: 800, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740446788
@@ -29583,7 +29584,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1393175739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32519,7 +32520,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1033, y: -78}
+  m_AnchoredPosition: {x: 1035, y: -78}
   m_SizeDelta: {x: 800, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1566473399
@@ -32879,7 +32880,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1033, y: 26}
+  m_AnchoredPosition: {x: 1035, y: 26}
   m_SizeDelta: {x: 800, y: 140}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1574254218
@@ -36623,7 +36624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1768566123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37625,7 +37626,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 1831520315}
         m_TargetAssemblyTypeName: toolMenu, Assembly-CSharp
         m_MethodName: toggleInventoryBool
@@ -38241,6 +38242,7 @@ MonoBehaviour:
   - {fileID: 740446786}
   - {fileID: 1574254216}
   - {fileID: 1566473396}
+  inventory: {fileID: 504896729}
   moveSpeed: 500
 --- !u!1 &1833129257
 GameObject:

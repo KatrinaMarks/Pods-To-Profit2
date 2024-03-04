@@ -10,8 +10,18 @@ public class toolMenu : MonoBehaviour
     public bool[] invBools;
     public GameObject[] sliders;
 
+    public InventoryManager inventory;
+
     int index = 0; // 0 = bioPest ; 1 = rhizo ; 2 = fert
     public float moveSpeed = 500;   // simply how fast the tool menu moves up/down
+
+    // The three x values for the sliders (bioPest, rhizo, & fert)
+
+    int[] showNumPos = new int[3] {875, 735, 595};
+    int pos;
+    int showOne = 875;
+    int showTwo = 735;
+    int showThree = 595;
 
     /* I have no idea how I got the coordinates for upPos and downPos, but when using 
      * transform.position = upPos or = downPos, these are the coordinates that made them
@@ -54,8 +64,25 @@ public class toolMenu : MonoBehaviour
             if (sliders[nextIndex(index)].transform.localPosition.x < 1033)             sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
         } else if (invBools[index] == true) {
+            switch (index) {
+                case 0:
+                    if (inventory.pesticides <= 1) pos = showOne;
+                    else if (inventory.pesticides == 2) pos = showTwo;
+                    else if (inventory.pesticides >= 3) pos = showThree;
+                    break;
+                case 1:
+                    if (inventory.rhizobium <= 1) pos = showOne;
+                    else if (inventory.rhizobium == 2) pos = showTwo;
+                    else if (inventory.rhizobium >= 3) pos = showThree;
+                    break;
+                case 2:
+                    if (inventory.fert <= 1) pos = showOne;
+                    else if (inventory.fert == 2) pos = showTwo;
+                    else if (inventory.fert >= 3) pos = showThree;
+                    break;                
+            }
             // open slider at index
-            if (sliders[index].transform.localPosition.x > 595) sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            if (sliders[index].transform.localPosition.x > pos) sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
             // close the other two if still open
             if (sliders[nextIndex(index)].transform.localPosition.x < 1033) sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033) sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
