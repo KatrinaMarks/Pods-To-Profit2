@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class toolMenu : MonoBehaviour
 {
@@ -10,7 +11,13 @@ public class toolMenu : MonoBehaviour
     public bool[] invBools;
     public GameObject[] sliders;
 
-    public InventoryManager inventory;
+    public InventoryManager invMan;
+
+    // Haven't decided if I want to move the logic for these here from InventoryManager
+    // [Header("Slider Texts")]
+    // public TMP_Text fertSlot1Text; 
+    // public TMP_Text fertSlot2Text; 
+    // public TMP_Text fertSlot3Text; 
 
     int index = 0; // 0 = bioPest ; 1 = rhizo ; 2 = fert
     public float moveSpeed = 500;   // simply how fast the tool menu moves up/down
@@ -64,23 +71,11 @@ public class toolMenu : MonoBehaviour
             if (sliders[nextIndex(index)].transform.localPosition.x < 1033)             sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
         } else if (invBools[index] == true) {
-            switch (index) {
-                case 0:
-                    if (inventory.pesticides <= 1) pos = showOne;
-                    else if (inventory.pesticides == 2) pos = showTwo;
-                    else if (inventory.pesticides >= 3) pos = showThree;
-                    break;
-                case 1:
-                    if (inventory.rhizobium <= 1) pos = showOne;
-                    else if (inventory.rhizobium == 2) pos = showTwo;
-                    else if (inventory.rhizobium >= 3) pos = showThree;
-                    break;
-                case 2:
-                    if (inventory.fert <= 1) pos = showOne;
-                    else if (inventory.fert == 2) pos = showTwo;
-                    else if (inventory.fert >= 3) pos = showThree;
-                    break;                
-            }
+            // checks sum of types to set how far to open the slider
+            if (invMan.inventory[index][3] <= 1)        pos = showOne;
+            else if (invMan.inventory[index][3] == 2)   pos = showTwo;
+            else                                        pos = showThree;
+            
             // open slider at index
             if (sliders[index].transform.localPosition.x > pos) sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
             // close the other two if still open
