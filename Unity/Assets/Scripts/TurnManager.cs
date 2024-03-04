@@ -32,6 +32,25 @@ public class TurnManager : MonoBehaviour
     public GameObject[] turnPanels;
     public InventoryManager inventory;
 
+    /*
+     *
+     * (KM) I'm adding some variables I think we need. We need a farmingStatus variable (0, 1, or 2)
+     * that we can check to see if a warning should appear for the player. 
+     * Preplant variables:
+     * These variables will have values 0,1,or 2 corresponding to organic, sustainable, conventional.
+     * Note that the tillType2 variable will causes yield changes in the next year/level.It will only have the value 0 or 2.
+     * named tillType2 b/c there is an existing tillType variable that we need to look into later.
+     * We also need seedType, seedTreatmentType, and fertilizerType variables for preplant.
+     */
+    public int farmingStatus = 0;
+    public int tillType2 = 0;
+    public int seedType = 0;
+    public int seedTreatmentType = 0;
+    public int fertilizerType = 0;
+
+    /* We also need a GameObject variable for the warning */
+    //public GameObject WarningPopUp;
+
     /* 
      * There are alredy a bunch of weather variables included in the Cotyledon stage,
      * (is this the only stage where we will have weather events?), but there is no
@@ -661,6 +680,7 @@ public class TurnManager : MonoBehaviour
       return false;
     }
 
+   /* This is the old code that will eventually be deleted */
     /* preplantToggles list is [tractorYes, GMOYes, TillSub, TillNo, Rhizo, BioPest]
      * We can infer the other toggles based on these
      */
@@ -712,10 +732,11 @@ public class TurnManager : MonoBehaviour
       }
     }
 
-    /* making new function for setting the tilling when a tilling button is pressed 
+    /* (KM) making new function for setting the tilling when a tilling button is pressed 
      * I'm copy pasting some of the code that was in preplantConfirm
      * Doing similar for seed type. */
 
+    /* (KM) This was practice code, will probably delete later */
      public void preplantTillingConfirmation(int tillType)
      {
         /* If no till */
@@ -767,6 +788,29 @@ public class TurnManager : MonoBehaviour
      {
       
      }
+
+     /* (KM) The actual new code for handling preplant decisions and warnings */
+
+     /* First we need an update farmingStatus function, that gets called after each decision. */
+    public void updateFarmingStatusPreplant()
+    {
+      if(tillType2 >= 2 | seedType >= 2 | seedTreatmentType >= 2 | fertilizerType >= 2)
+      {
+        farmingStatus = 2;
+      }
+      else if(tillType2 >= 1 | seedType >= 1 | seedTreatmentType >= 1 | fertilizerType >= 1)
+      {
+        farmingStatus = 1;
+      } 
+    }
+    /* Now we need to check the farming status to see if we should make a warning pop up */
+    public void giveWarning(int potentialStatus)
+    {
+      if(potentialStatus > farmingStatus)
+      {
+        
+      }
+    }
 
     /* fertilizerToggles list is [fertOrg, irrOverhead, irrFlood]
      * We can infer the other toggles based on these
