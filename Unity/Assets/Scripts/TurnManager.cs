@@ -49,7 +49,7 @@ public class TurnManager : MonoBehaviour
     public int fertilizerType = 0;
 
     /* We also need a GameObject variable for the warning */
-    //public GameObject WarningPopUp;
+    public GameObject OrgToConvWarning;
 
     /* 
      * There are alredy a bunch of weather variables included in the Cotyledon stage,
@@ -790,9 +790,14 @@ public class TurnManager : MonoBehaviour
      }
 
      /* (KM) The actual new code for handling preplant decisions and warnings */
+     /* We need to update tillType2, seedType, seedTreatmentType, or fertilizerType */
+     public void UpdateTillType(int tillageType)
+     {
+      tillType2 = tillageType;
+     }
 
-     /* First we need an update farmingStatus function, that gets called after each decision. */
-    public void updateFarmingStatusPreplant()
+     /* After each decision, we need to update farmingStatus with this function function. */
+    public void UpdateFarmingStatusPreplant()
     {
       if(tillType2 >= 2 | seedType >= 2 | seedTreatmentType >= 2 | fertilizerType >= 2)
       {
@@ -804,12 +809,16 @@ public class TurnManager : MonoBehaviour
       } 
     }
     /* Now we need to check the farming status to see if we should make a warning pop up */
-    public void giveWarning(int potentialStatus)
+    public void GiveWarning(int potentialStatus)
     {
-      if(potentialStatus > farmingStatus)
+      /* If the potential new status is greater than current farming status set warning to active */
+      /* Remember org = 0, sus = 1, and con = 2 */
+      if(farmingStatus == 0 & potentialStatus == 2)
       {
-        
+        //true;
+        OrgToConvWarning.SetActive(true);
       }
+      
     }
 
     /* fertilizerToggles list is [fertOrg, irrOverhead, irrFlood]
