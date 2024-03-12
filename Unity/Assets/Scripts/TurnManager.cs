@@ -54,7 +54,8 @@ public class TurnManager : MonoBehaviour
     public GameObject SusToConWarning;
 
     /* Finally we need a variable saying what decision/choice the player is on, making the warning flow easier to connect */
-    public int choice = 0;
+    // actually don't need this
+    //public int choice = 0;
 
     /* 
      * There are alredy a bunch of weather variables included in the Cotyledon stage,
@@ -792,31 +793,41 @@ public class TurnManager : MonoBehaviour
      /* (KM) The actual new code for handling preplant decisions and warnings */
      /* We need to update tillType2, seedType, seedTreatmentType, or fertilizerType */
 
-     /* We want the player to be able to change these choices after preplant,
-        so the chgChoice variable can be set to change the choice variable at later points in the game */
-     public void UpdatePreplant(int status, int chgChoice)
+     /* We want the player to be able to change these decisions after preplant,
+        so the chgChoice variable can be set to change the decision variable at later points in the game,
+        during the beginning preplant decisions just set this to 5, then to change a decision later set it to 0, 1, 2, or 3 */
+      /* Actually gonna change above comments */
+     public void UpdatePreplant(string choiceType)
      {
-      if (chgChoice >= 0)
+      int choice = choiceType[0] - '0';
+      int type = choiceType[1] - '0';
+      /*if (choiceStatusDouble.Length > 2)
+      {
+        int doubleInfo = choiceStatusDouble[2] - '0';
+      }*/
+      /*if (chgChoice < 5)
       {
         choice = chgChoice;
-      }
+      }*/
       if (choice == 0)
       {
-        tillType2 = status;
+        tillType2 = type;
       }
       if (choice == 1)
       {
-        seedType = status;
+        seedType = type;
       }
       if (choice == 2)
       {
-        seedTreatmentType = status;
+        seedTreatmentType = type;
       }
       if (choice == 3)
       {
-        fertilizerType = status;
+        fertilizerType = type;
       }
-      choice++;
+      //choice++;
+      string output = string.Format("Choice: {0}", choice);
+      Debug.Log(output);
      }
      /*
      public void UpdateTillType(int tillageTypes)
@@ -834,16 +845,17 @@ public class TurnManager : MonoBehaviour
 
 
      /* After each decision, we need to update farmingStatus with this function function. */
-    public void UpdateFarmingStatusPreplant()
+    public void UpdateFarmingStatus(int status)
     {
-      if(tillType2 >= 2 | seedType >= 2 | seedTreatmentType >= 2 | fertilizerType >= 2)
+      farmingStatus = status;
+      /*if(tillType2 >= 2 | seedType >= 2 | seedTreatmentType >= 2 | fertilizerType >= 2)
       {
         farmingStatus = 2;
       }
       else if(tillType2 >= 1 | seedType >= 1 | seedTreatmentType >= 1 | fertilizerType >= 1)
       {
         farmingStatus = 1;
-      } 
+      } */
     }
     /* Now we need to check the farming status to see if we should make a warning pop up */
     public void GiveWarning(int potentialStatus)
@@ -858,17 +870,17 @@ public class TurnManager : MonoBehaviour
       }
 
       /* If status is organic and potential status is sustainable */
-      if(farmingStatus == 0 & potentialStatus == 1)
+      else if(farmingStatus == 0 & potentialStatus == 1)
       {
         OrgToSusWarning.SetActive(true);
       }
 
       /* If status is sustainable and potential status is conventional */ 
-      if(farmingStatus == 1 & potentialStatus == 2)
+      else if(farmingStatus == 1 & potentialStatus == 2)
       {
         SusToConWarning.SetActive(true);
       }
-
+      
      
     }
 
