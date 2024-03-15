@@ -5876,6 +5876,7 @@ GameObject:
   - component: {fileID: 271376926}
   - component: {fileID: 271376928}
   - component: {fileID: 271376927}
+  - component: {fileID: 271376929}
   m_Layer: 5
   m_Name: stageProgressBar
   m_TagString: Untagged
@@ -5900,7 +5901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 445, y: 495}
+  m_AnchoredPosition: {x: 773, y: 495}
   m_SizeDelta: {x: 330, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &271376927
@@ -5916,7 +5917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.44423977, g: 0.7169812, b: 0.3077608, a: 0.5529412}
+  m_Color: {r: 0.2901961, g: 0.24705884, b: 0.227451, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5941,6 +5942,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 271376925}
   m_CullTransparentMesh: 1
+--- !u!114 &271376929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271376925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad4546e525da1ff4c855f934c589c464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progBar: {fileID: 271376927}
+  newColor: {r: 0, g: 0, b: 0, a: 0}
+  statusBar: {fileID: 271376925}
+  colorShift: 0
 --- !u!1 &277422233
 GameObject:
   m_ObjectHideFlags: 0
