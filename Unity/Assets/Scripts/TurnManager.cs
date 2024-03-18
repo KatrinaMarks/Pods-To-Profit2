@@ -802,7 +802,7 @@ public class TurnManager : MonoBehaviour
 
      /* We want the player to be able to change these decisions after preplant,
         so choice is used to say which preplant decision gets changed, type is 0, 1, or 2,
-        and there is a decimal placed after if there is more than one decision that results in the status */
+        and there is a decimal placed after if there is more than one decision that results in the same status */
   
      public void UpdatePreplant(string choiceType)
      {
@@ -851,23 +851,8 @@ public class TurnManager : MonoBehaviour
      {
       UpdatePreplant(decision);
      }
-     /*
-     public void UpdateTillType(int tillageTypes)
-     {
-      tillType2 = tillageTypes;
-     }
-     public void UpdateSeedType(int seedTypes)
-     {
-      seedType = seedTypes;
-     }
-     public void UpdateSeedTreatmentType(int seedTreatmentTypes)
-     {
-      seedTreatmentType = seedTreatmentTypes;
-     } */
-
 
      /* After each decision, we need to update farmingStatus with this function function. */
-    //public void UpdateFarmingStatus(int status)
     public void UpdateFarmingStatus()
     {
       //farmingStatus = status;
@@ -881,8 +866,6 @@ public class TurnManager : MonoBehaviour
       }
     }
     /* Now we need to check the farming status to see if we should make a warning pop up */
-
-    
     public void GiveWarning(int potentialStatus) 
     {
       // If the potential new status is greater than current farming status set warning to active
@@ -911,6 +894,7 @@ public class TurnManager : MonoBehaviour
         UpdatePreplant(decision);
       }
     }
+    /* (KM) End of the code for handling preplant decisions and warnings */
 
     /* fertilizerToggles list is [fertOrg, irrOverhead, irrFlood]
      * We can infer the other toggles based on these

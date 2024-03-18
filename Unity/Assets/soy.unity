@@ -18814,40 +18814,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 999424891}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1477915479}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: UpdatePreplant
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 20.1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &778167821
@@ -30350,40 +30326,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 773538685}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1477915479}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: UpdatePreplant
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 30.1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1169125579
@@ -44211,14 +44163,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1477915479}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: SetChoiceType
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 11.1
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1477915479}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: GiveWarning
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -50084,6 +50048,30 @@ PrefabInstance:
       propertyPath: m_text
       value: PESTICIDE
       objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1477915479}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdatePreplant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TurnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 5200878037111384602, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_Name
       value: Seed Treatment Type
@@ -50175,6 +50163,54 @@ PrefabInstance:
     - target: {fileID: 5200878037111384603, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1477915479}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1477915479}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetChoiceType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: GiveWarning
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TurnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TurnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037335596103, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_IsActive
@@ -50815,6 +50851,30 @@ PrefabInstance:
       propertyPath: m_text
       value: INORGANIC
       objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1477915479}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdatePreplant
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TurnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037043527541, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 5200878037111384602, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_Name
       value: Fertilizer Type
@@ -50906,6 +50966,54 @@ PrefabInstance:
     - target: {fileID: 5200878037111384603, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1477915479}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1477915479}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetChoiceType
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: GiveWarning
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TurnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TurnManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037335596103, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_IsActive
@@ -53318,7 +53426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2840459510592069454, guid: 7eb1e118aef89964ab27efb9031b3c4f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 529
+      value: 560
       objectReference: {fileID: 0}
     - target: {fileID: 2840459510592069455, guid: 7eb1e118aef89964ab27efb9031b3c4f, type: 3}
       propertyPath: m_text
