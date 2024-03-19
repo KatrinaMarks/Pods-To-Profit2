@@ -5,28 +5,41 @@ using UnityEngine.UI;
 
 public class stageProgressBar : MonoBehaviour
 {
-    [SerializeField] private Image progBar;
-    [SerializeField] private Color newColor;
+    public float duration = 10;
+    float timeElapsed = 0;
 
-    Color brown = new Vector4(74, 63, 58);
-    Color green = new Vector4(113, 183, 78);
+    public Color lerpedColor;
+    public Color brown; // = (74, 63, 58, 255);
+    public Color green; // = (113, 183, 78, 255);
+    public Image progBarImage;
 
-    public GameObject statusBar;
-    Renderer barRenderer; // = statusBar.GetComponent<renderer>();
-    public bool colorShift = false;
-
-    float timeLeft;
-    Color targetColor;
+    public float lerpedPos;
+    float startPos = 445;
+    float endPos = 773;
+    public GameObject progBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        barRenderer = GetComponent<SpriteRenderer>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (timeElapsed < duration) {
+            float t = timeElapsed / duration;
+            lerpedColor = Color.Lerp(brown, green, t);
+            lerpedPos = Mathf.Lerp(startPos, endPos, t);
+            timeElapsed += Time.deltaTime;
+        } else {
+            lerpedColor = green;
+            lerpedPos = endPos;
+        }
+
+        progBar.GetComponent<Image>().color = lerpedColor;
+        progBar.transform.localPosition = new Vector3(lerpedPos, progBar.transform.localPosition.y, 0);
+        /*
         // if (timeLeft <= Time.deltaTime)
         // {
         //     // transition complete
@@ -51,12 +64,6 @@ public class stageProgressBar : MonoBehaviour
         // newColor = Color.Lerp(brown, green, Mathf.PingPong(Time.deltaTime, 1));
         // progBar.color = newColor;
         // if (colorShift) changeColor();
-    }
-
-
-    void changeColor() {
-        // progBar.color = brown;
-        progBar.color = Color.Lerp(brown, green, Mathf.PingPong(Time.time, 1));
-        // barRenderer.material.color = Color.Lerp(brown, green, Mathf.PingPong(Time.time, 1));
+        */
     }
 }

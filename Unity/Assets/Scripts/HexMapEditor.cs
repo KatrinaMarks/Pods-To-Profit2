@@ -5,7 +5,9 @@ using UnityEngine.EventSystems;
 public class HexMapEditor : MonoBehaviour
 {
 
-    public int[] textures;
+    // I've tried declaring and initializing this different ways to try to get the warning 
+    // to stop when it's called in Awake() but it wont and idfk why
+    public int[] textures = new int[6]; 
 
     public HexGrid hexGrid;
     public TurnManager turnManager;
@@ -14,7 +16,7 @@ public class HexMapEditor : MonoBehaviour
 
     void Awake()
     {
-        SelectColor(0);
+        SelectColor(0);   // what does this even do here? g
     }
 
     Vector3 lastHitPoint; // Keep track of the last hex that was colored
@@ -38,7 +40,7 @@ public class HexMapEditor : MonoBehaviour
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
                     {
                         lastHitPoint = hit.point;
-                        if(hexGrid.CheckColorCell(lastHitPoint, activeTexture)){
+                        if(hexGrid.CheckColorCell(lastHitPoint, activeTexture)){ // "object reference not set to an instance of an object"
                         	HandleInput();
 						}
                     }
@@ -51,7 +53,7 @@ public class HexMapEditor : MonoBehaviour
                     {
                         if (hit.point != lastHitPoint)
                         {
-                            if (hexGrid.CheckColorCell(hit.point, activeTexture))
+                            if (hexGrid.CheckColorCell(hit.point, activeTexture)) // "object reference not set to an instance of an object"
                             {
                                 lastHitPoint = hit.point;
                                 HandleInput();
@@ -99,6 +101,9 @@ public class HexMapEditor : MonoBehaviour
 
     public void SelectColor(int index)
     {
-        activeTexture = textures[index];
+        if (textures.Length > 0)
+            activeTexture = textures[index];
+        else
+            Debug.Log("Awake() throwing out of range exception"); // even when initialized... why is this even called in Awake()? When even is Awake() called?
     }
 }

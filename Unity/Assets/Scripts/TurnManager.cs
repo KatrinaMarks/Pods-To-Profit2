@@ -91,8 +91,9 @@ public class TurnManager : MonoBehaviour
 
     [Header ("Tool Buttons")]
     public Button tiller;
-    public Button rhizo;
+    // public Button rhizo;
     public Button pest;
+    public Button seed;
     public Button fert;
     public Button sale;
 
@@ -369,7 +370,7 @@ public class TurnManager : MonoBehaviour
             shopButtons[i].SetActive(false);
           }
 
-          rhizo.interactable = true;
+          // rhizo.interactable = true;
           pest.interactable = true;
           rtext.SetActive(true);
           ptext.SetActive(true);
@@ -388,7 +389,7 @@ public class TurnManager : MonoBehaviour
             Random Chance
             Random chance for tractor to break down if owned or for "household issues" (not sure what those would be)
         */
-          rhizo.interactable = false;
+          // rhizo.interactable = false;
           pest.interactable = false;
           rtext.SetActive(false);
           ptext.SetActive(false);

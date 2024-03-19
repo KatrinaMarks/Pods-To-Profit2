@@ -37,7 +37,8 @@ public class InventoryManager : MonoBehaviour
      * I plan on using ENUMs for both of these so we don't have to memorize which number corresponds 
      * to which item or status, they're declared above but I haven't used them yet
      */
-    public int[][] inventory = new int[4][];
+    public int[][] inventory = new int[3][];
+    public int curSlider = -1; // index of which slider is currently open (-1 = none) ; updated in toolMenu.cs
 
     public TMP_Text moneyText;
     public TMP_Text shopMoneyText;
@@ -49,9 +50,14 @@ public class InventoryManager : MonoBehaviour
     public bool brokenTractor = false;
 
     [Header("Slider Texts")]
-    public TMP_Text fertSlot1Text; 
-    public TMP_Text fertSlot2Text; 
-    public TMP_Text fertSlot3Text; 
+    public Image testImage;
+    public GameObject testObject;
+    /* 
+     * 0 - 2 = pest slots 1 - 3
+     * 3 - 5 = seed slots 1 - 3
+     * 6 - 8 = fert slots 1 - 3
+     */
+    public GameObject[] sliderSlots = new GameObject[9];
 
     // [Header("Shop Buttons")]
     // public Button buySeedConButton;
@@ -67,15 +73,14 @@ public class InventoryManager : MonoBehaviour
         moneyText.text = "$" + money;
         shopMoneyText.text = "$" + money;
         // moneyTextDisplay.text = "$" + money.ToString();
-
+ 
         /* Do I even need this? Just initializing the inventory array, but it doesn't
          * seem like the old group ever fully initialized the menu...[] arrays in TurnManager
          */
         /*                         con     sus     org    num                         */
-        inventory[0] = new int[4] {0,       0,      0,      0};     // bio pest
-        inventory[1] = new int[4] {0,       0,      0,      0};     // rhizo
+        inventory[0] = new int[4] {0,       0,      0,      0};     // pest
+        inventory[1] = new int[4] {0,       0,      0,      0};     // seed
         inventory[2] = new int[4] {0,       0,      0,      0};     // fert
-        inventory[3] = new int[4] {0,       0,      0,      0};     // seeds
     }
 
     // Update is called once per frame
@@ -85,33 +90,28 @@ public class InventoryManager : MonoBehaviour
         // pText.text = "BioPesticides: " + pesticides;
         // fText.text = "Fertilizer: " + fert;
 
-        if (inventory[2][3] > 0) {
-            int i = 0;
-            // if only one slot showing, find which type and display it's number
-            if (inventory[2][3] <= 1) {
-                while (inventory[2][i] == 0) i++;
-                fertSlot1Text.text = "x" + inventory[2][i];
+        if (curSlider > -1 && inventory[curSlider][3] > 0) {
+            int i = 0; // the while() loops until i is the index of a status that is > 0
+            // if only one slot showing, find which type and display its image and number
+            if (inventory[curSlider][3] <= 1) {
+                while (inventory[curSlider][i] == 0) i++;
+                sliderSlots[curSlider * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+                sliderSlots[curSlider * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][i];
             // else if only two showing, find and display the two > 0
-            } else if (inventory[2][3] == 2) {
-                while (inventory[2][i] == 0) i++;
-                fertSlot1Text.text = "x" + inventory[2][i++];
-                while (inventory[2][i] == 0) i++;
-                fertSlot2Text.text = "x" + inventory[2][i];
+            } else if (inventory[curSlider][3] == 2) {
+                while (inventory[curSlider][i] == 0) i++;
+                sliderSlots[curSlider * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+                sliderSlots[curSlider * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][i++];
+                while (inventory[curSlider][i] == 0) i++;
+                sliderSlots[(curSlider * 3) + 1].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][i];
             // else all three showing so display accordingly
             } else {
-                fertSlot1Text.text = "x" + inventory[2][0];
-                fertSlot2Text.text = "x" + inventory[2][1];
-                fertSlot3Text.text = "x" + inventory[2][2];
+                sliderSlots[curSlider * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+                sliderSlots[curSlider * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][0];
+                sliderSlots[(curSlider * 3) + 1].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][1];
+                sliderSlots[(curSlider * 3) + 2].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][2];
             }
         }
-        // idk why the enums don't work, I'll figure that out later
-        // fertSlot1Text.text = "x" + inventory[items.FERT][status.CON];
-        // fertSlot2Text.text = "x" + inventory[items.FERT][status.SUS];
-        // fertSlot3Text.text = "x" + inventory[items.FERT][status.ORG];
-
-        // fertSlot1Text.text = "x" + inventory[2][0];
-        // fertSlot2Text.text = "x" + inventory[2][1];
-        // fertSlot3Text.text = "x" + inventory[2][2];
     }
 
     /* Adds to money. Pass in negative amount to subtract */

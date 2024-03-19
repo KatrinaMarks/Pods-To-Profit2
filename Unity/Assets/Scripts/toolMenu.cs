@@ -19,10 +19,10 @@ public class toolMenu : MonoBehaviour
     // public TMP_Text fertSlot2Text; 
     // public TMP_Text fertSlot3Text; 
 
-    int index = 0; // 0 = bioPest ; 1 = rhizo ; 2 = fert
+    int index = 0; // 0 = pest ; 1 = seed ; 2 = fert
     public float moveSpeed = 500;   // simply how fast the tool menu moves up/down
 
-    // The three x values for the sliders (bioPest, rhizo, & fert)
+    // The three x values for the sliders (pest, seed, & fert)
 
     int[] showNumPos = new int[3] {875, 735, 595};
     int pos;
@@ -54,12 +54,13 @@ public class toolMenu : MonoBehaviour
     void Update()
     {
         // Moves the tool menu extension up/down depending on the status of menuBool
-        if (menuBool == false && transform.position.y > -62) {
+        if (menuBool == false && transform.position.y > -65) {
             transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
             // set all three to false to close the sliders
             invBools[0] = false;
             invBools[1] = false;
             invBools[2] = false;
+            invMan.curSlider = -1;
         } else if (menuBool == true && transform.position.y < 248) {
             transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
         }
@@ -77,10 +78,10 @@ public class toolMenu : MonoBehaviour
             else                                        pos = showThree;
             
             // open slider at index
-            if (sliders[index].transform.localPosition.x > pos) sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+            if (sliders[index].transform.localPosition.x > pos)     sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
             // close the other two if still open
-            if (sliders[nextIndex(index)].transform.localPosition.x < 1033) sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-            if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033) sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            if (sliders[nextIndex(index)].transform.localPosition.x < 1033)             sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+            if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
         }
     }
 
@@ -94,6 +95,7 @@ public class toolMenu : MonoBehaviour
         invBools[nextIndex(i)] = false;
         invBools[nextIndex(nextIndex(i))] = false;
         index = i;
+        invMan.curSlider = i;
     }
 
     // rotates the index from 0 -> 1 -> 2 -> 0 
