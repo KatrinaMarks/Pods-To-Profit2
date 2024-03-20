@@ -64,6 +64,10 @@ public class TurnManager : MonoBehaviour
     public GameObject PreplantDecision2;
     public GameObject PreplantDecision3;
 
+    /* TurnPhaseQuestions game objects so we can set them inactive and active in the code */
+    public GameObject PreplantQuestions;
+    public GameObject PlantingQuestions;
+
     /* 
      * There are alredy a bunch of weather variables included in the Cotyledon stage,
      * (is this the only stage where we will have weather events?), but there is no
@@ -117,7 +121,7 @@ public class TurnManager : MonoBehaviour
 
     public float notillPriceModifier = .8f;
     public float notillYieldModifier = .8f;
-    int tillType; //3 = subsoil, 6 = conv, 2 = notill. Indexes into cell graphic array for choosing the correct till tile graphic
+    int tillType = 3; //3 = subsoil, 6 = conv, 2 = notill. Indexes into cell graphic array for choosing the correct till tile graphic
 
     public float rhizoYieldModifier= 1.1f;
     public int rhizoAmount = -50;
@@ -837,6 +841,9 @@ public class TurnManager : MonoBehaviour
       {
         fertilizerType = type;
         PreplantDecision3.SetActive(false);
+        //PreplantQuestions.SetActive(false);
+        //PlantingQuestions.SetActive(true);
+
       }
       UpdateFarmingStatus();
       string output = string.Format("Choice: {0} {1}", choice, type);

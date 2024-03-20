@@ -36778,7 +36778,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1393175739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38124,6 +38124,8 @@ MonoBehaviour:
   PreplantDecision1: {fileID: 1644420477}
   PreplantDecision2: {fileID: 999424891}
   PreplantDecision3: {fileID: 773538685}
+  PreplantQuestions: {fileID: 1771989433}
+  PlantingQuestions: {fileID: 1182237856}
   temp: 82
   tempText: {fileID: 366047282}
   tmpArw: {fileID: 0}
@@ -45553,7 +45555,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1768566123
 MonoBehaviour:
   m_ObjectHideFlags: 0
