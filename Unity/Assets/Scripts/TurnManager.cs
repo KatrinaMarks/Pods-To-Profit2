@@ -29,6 +29,7 @@ public class TurnManager : MonoBehaviour
     public HexMapEditor editor;
     public HexGrid grid;
     public TurnPhase current;
+    // public TMP_Text phaseText;
     public GameObject[] turnPanels;
     public InventoryManager inventory;
 
@@ -44,6 +45,9 @@ public class TurnManager : MonoBehaviour
      * We also need seedType, seedTreatmentType, and fertilizerType variables for preplant.
      */
     public int farmingStatus = 0;
+    public TMP_Text statusText;
+    public string[] statuses = {"Organic" , "Sustainable" , "Conventional"};
+    public Color[] statusColors = new Color[3];
     public float tillType2 = 0;
     public float seedType = 0;
     public float seedTreatmentType = 0;
@@ -191,6 +195,8 @@ public class TurnManager : MonoBehaviour
       current = TurnPhase.Preplant;
       tmpArw = GameObject.FindGameObjectWithTag("Arrow").GetComponent<tempArrow>();
       tmpArw.rotateArrow(temp);
+      statusText.text = statuses[farmingStatus];
+      statusText.color = statusColors[farmingStatus];
       activeTurn();
       phaseText.text = current.ToString();
       perSeedBasePlantPriceReset = perSeedBasePlantPrice;
@@ -628,8 +634,9 @@ public class TurnManager : MonoBehaviour
 
     public void rhizoSelected()
     {
-      bool r = rhizoing == true ? false : true;
-      rhizoing = r;
+      // bool r = rhizoing == true ? false : true;
+      // rhizoing = r;
+      rhizoing = !rhizoing;
     }
 
     public void rhizoClicked()
@@ -872,6 +879,8 @@ public class TurnManager : MonoBehaviour
       {
         farmingStatus = 1;
       }
+      statusText.text = statuses[farmingStatus];
+      statusText.color = statusColors[farmingStatus];
     }
     /* Now we need to check the farming status to see if we should make a warning pop up */
     public void GiveWarning(int potentialStatus) 
