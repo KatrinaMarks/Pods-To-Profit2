@@ -104,11 +104,22 @@ public class TurnManager : MonoBehaviour
     public Button seed;
     public Button fert;
     public Button sale;
+    /* 
+     * 0 - 2 = pest slots 1 - 3
+     * 3 - 5 = seed slots 1 - 3
+     * 6 - 8 = fert slots 1 - 3
+     */
+    public Button[] invButtons = new Button[9];
+    public bool[] invBools = new bool[9];
 
     [Header ("Tool Amount Labels")]
     public GameObject rtext;
     public GameObject ptext;
     public GameObject ftext;
+    /* 0 - organic ; 1 - sustainable ; 2 - conventional */
+    public int[] pestAmounts = new int[3];
+    public int[] seedAmounts = new int[3];
+    public int[] fertAmounts = new int[3];
 
     [Header ("Preplant Variables")]
     public float perSeedBasePlantPrice = 25.0f; // Represents the labor cost of planting per tile
@@ -202,8 +213,11 @@ public class TurnManager : MonoBehaviour
       perSeedBasePlantPriceReset = perSeedBasePlantPrice;
       perPlantSaleAmountReset = perPlantSaleAmount;
       tiller.interactable = false;
-      fert.interactable = false;
-      sale.interactable = false;
+      // fert.interactable = false;
+      invButtons[6].interactable = false;
+      invButtons[7].interactable = false;
+      invButtons[8].interactable = false;
+      // sale.interactable = false;
 
       ftext.SetActive(false);
     }
@@ -381,7 +395,10 @@ public class TurnManager : MonoBehaviour
           }
 
           // rhizo.interactable = true;
-          pest.interactable = true;
+          // pest.interactable = true;
+          invButtons[0].interactable = true;
+          invButtons[1].interactable = true;
+          invButtons[2].interactable = true;
           rtext.SetActive(true);
           ptext.SetActive(true);
 
@@ -404,7 +421,10 @@ public class TurnManager : MonoBehaviour
            Tell Player to till to plant seeds
         */
           // rhizo.interactable = false;
-          pest.interactable = false;
+          // pest.interactable = false;
+          invButtons[0].interactable = false;
+          invButtons[1].interactable = false;
+          invButtons[2].interactable = false;
           rtext.SetActive(false);
           ptext.SetActive(false);
 
@@ -514,7 +534,10 @@ public class TurnManager : MonoBehaviour
             p.GetComponent<Plant>().stages[1].SetActive(false);
             p.GetComponent<Plant>().stages[2].SetActive(true);
           }
-          fert.interactable = true;
+          // fert.interactable = true;
+          invButtons[6].interactable = true;
+          invButtons[7].interactable = true;
+          invButtons[8].interactable = true;
           ftext.SetActive(true);
 
           turnPanels[(int)current].SetActive(true);
@@ -557,7 +580,10 @@ public class TurnManager : MonoBehaviour
           }
           repWeatherRandomChanceText.text = text;
 
-          fert.interactable = false;
+          // fert.interactable = false;
+          invButtons[6].interactable = false;
+          invButtons[7].interactable = false;
+          invButtons[8].interactable = false;
           ftext.SetActive(false);
 
           foreach(GameObject p in plants)
@@ -697,6 +723,7 @@ public class TurnManager : MonoBehaviour
 
     public void tillSelected()
     {
+      
       editor.SelectColor(tillType);
     }
 

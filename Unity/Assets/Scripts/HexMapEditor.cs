@@ -16,7 +16,7 @@ public class HexMapEditor : MonoBehaviour
 
     void Awake()
     {
-        SelectColor(0);   // what does this even do here? g
+        SelectColor(0);   
     }
 
     Vector3 lastHitPoint; // Keep track of the last hex that was colored
