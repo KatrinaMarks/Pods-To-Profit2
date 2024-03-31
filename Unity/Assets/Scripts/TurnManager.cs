@@ -736,28 +736,28 @@ public class TurnManager : MonoBehaviour
       return false;
     }
 
-   /* This is the old code that will eventually be deleted */
+   /* (KM) This is the old code that will eventually be deleted */
     /* preplantToggles list is [tractorYes, GMOYes, TillSub, TillNo, Rhizo, BioPest]
      * We can infer the other toggles based on these
      */
-    public void preplantConfirm()
+    /*public void preplantConfirm()
     {
-      /* If Tractor yes */
+      // If Tractor yes 
       if(preplantToggles[0].GetComponent<Toggle>().isOn)
       {
         if(!inventory.ownTractor && !inventory.brokenTractor)
         {
-          /* We're leasing, deduct lease amount. */
+          // We're leasing, deduct lease amount. 
           inventory.changeMoney(tractorLeaseAmount);
         }
       }
-      else /* Tractor no */
+      else // Tractor no 
       {
-        /* Accounts for extra labor */
+        // Accounts for extra labor 
         perSeedBasePlantPrice *= notractorPriceModifier;
       }
 
-      /* If GMO yes */
+      // If GMO yes 
       if(preplantToggles[1].GetComponent<Toggle>().isOn)
       {
         perSeedBasePlantPrice *= gmoPriceModifier;
@@ -765,7 +765,7 @@ public class TurnManager : MonoBehaviour
         updatePerks("GMOs");
       }
 
-      /* If Subsoil tilling */
+      // If Subsoil tilling 
       if(preplantToggles[2].GetComponent<Toggle>().isOn)
       {
         perSeedBasePlantPrice *= subsoilPriceModifier;
@@ -773,7 +773,7 @@ public class TurnManager : MonoBehaviour
         tillType = 2;
         updatePerks("Subsoiling");
       }
-      /* If no till */
+      // If no till 
       else if(preplantToggles[3].GetComponent<Toggle>().isOn)
       {
         perSeedBasePlantPrice *= notillPriceModifier;
@@ -781,21 +781,21 @@ public class TurnManager : MonoBehaviour
         tillType = 1;
         updatePerks("No Tilling");
       }
-      else /* conventional tilling */
+      else // conventional tilling 
       {
         tillType = 5;
         updatePerks("conventional Tilling");
       }
-    }
+    } */
 
     /* (KM) making new function for setting the tilling when a tilling button is pressed 
      * I'm copy pasting some of the code that was in preplantConfirm
      * Doing similar for seed type. */
 
     /* (KM) This was practice code, will probably delete later */
-     public void preplantTillingConfirmation(int tillType)
+     /*public void preplantTillingConfirmation(int tillType)
      {
-        /* If no till */
+        // If no till 
         if (tillType == 1)
         {
           perSeedBasePlantPrice *= notillPriceModifier;
@@ -803,7 +803,7 @@ public class TurnManager : MonoBehaviour
           tillType = 1;
           updatePerks("No Tilling");
         }
-        /* If Subsoil tilling */
+        // If Subsoil tilling 
         if (tillType == 2)
         {
           perSeedBasePlantPrice *= subsoilPriceModifier;
@@ -811,7 +811,7 @@ public class TurnManager : MonoBehaviour
           tillType = 2;
           updatePerks("Subsoiling");
         }
-        /* If conventional tilling */
+        // If conventional tilling 
         if (tillType == 5)
         {
           tillType = 5;
@@ -821,24 +821,24 @@ public class TurnManager : MonoBehaviour
 
      public void preplantSeedConfirmation(int seedType)
      {
-      /* If organic seeds */
+      // If organic seeds 
       if (seedType == 1)
       {
-        /* don't know here yet, bc idk about price, yield percent, and perks... */
+        // don't know here yet, bc idk about price, yield percent, and perks... 
       }
-      /* If conventional seeds */
+      // If conventional seeds 
       if (seedType == 2)
       {
-        /* don't know here yet, bc idk about price, yield percent, and perks... */
+        // don't know here yet, bc idk about price, yield percent, and perks... 
       }
-      /* If GMO seeds */
+      // If GMO seeds 
       if (seedType == 3)
       {
         perSeedBasePlantPrice *= gmoPriceModifier;
         yieldPercent *= gmoYieldModifier;
         updatePerks("GMOs");
       }
-     }
+     } */
 
      /* (KM) The actual new code for handling preplant decisions and warnings */
      /* We need to update tillType2, seedType, seedTreatmentType, or fertilizerType */
@@ -943,6 +943,9 @@ public class TurnManager : MonoBehaviour
       }
     }
     /* (KM) End of the code for handling preplant decisions and warnings */
+
+    /* We want different game objects to blink to indicate that the player should click on them */
+    
 
     /* fertilizerToggles list is [fertOrg, irrOverhead, irrFlood]
      * We can infer the other toggles based on these
