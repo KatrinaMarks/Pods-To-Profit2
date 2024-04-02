@@ -7,32 +7,24 @@ using UnityEngine.UI;
 
 public class Blinker : MonoBehaviour
 {
-    public GameObject shopButton;
     public Image image;
-    public float currentImageColorAlpha = 0.5f;
+    public Color startColor = Color.green;
+    public Color endColor = Color.white;
+    public float speed = 1;
 
-    public float duration = 5f;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        image = shopButton.GetComponent<Image>();
-        //Get the alpha value of Color
-		currentImageColorAlpha = image.color.a;
-        //Color c = i.color;
-        //c.a = 0f;
-        //i.color = c;
+        image = GetComponent<Image>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        var startTime = Time.realtimeSinceStartup;
-        while(Time.realtimeSinceStartup < startTime + duration)
-        {
-            //image.color.a = 0f;
-        }
+        image.color = Color.Lerp(startColor, endColor, Mathf.PingPong(Time.time * speed, 1));
         
     }
 }
