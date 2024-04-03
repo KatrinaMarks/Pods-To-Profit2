@@ -10924,6 +10924,7 @@ GameObject:
   - component: {fileID: 442822039}
   - component: {fileID: 442822038}
   - component: {fileID: 442822037}
+  - component: {fileID: 442822040}
   m_Layer: 5
   m_Name: Tiller_Tool_Button
   m_TagString: Untagged
@@ -11038,6 +11039,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 442822040}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &442822039
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11046,6 +11059,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 442822035}
   m_CullTransparentMesh: 1
+--- !u!114 &442822040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442822035}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e17498db7631d9241acd709351b05ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 0}
+  startColor: {r: 0, g: 1, b: 0, a: 1}
+  endColor: {r: 1, g: 1, b: 1, a: 1}
+  speed: 1
 --- !u!1 &452641055
 GameObject:
   m_ObjectHideFlags: 0
@@ -17340,7 +17369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -17352,7 +17381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: 03
+      value: 02
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037191777909, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -39529,7 +39558,7 @@ MonoBehaviour:
   tillType2: 0
   seedType: 0
   seedTreatmentType: 0
-  fertilizerType: 0
+  fertType: 0
   OrgToConvWarning: {fileID: 3135}
   OrgToSusWarning: {fileID: 118281858}
   SusToConWarning: {fileID: 1662702990}
@@ -39540,6 +39569,9 @@ MonoBehaviour:
   PreplantDecision3: {fileID: 773538685}
   PreplantQuestions: {fileID: 1771989433}
   PlantingQuestions: {fileID: 1182237856}
+  Instruction2: {fileID: 1640903119}
+  ShopButton: {fileID: 1363750255}
+  TillButton: {fileID: 442822035}
   temp: 82
   tempText: {fileID: 186969644}
   tmpArw: {fileID: 0}
@@ -46548,18 +46580,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1363750260}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1716037008
 MonoBehaviour:
@@ -55483,7 +55503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037111384602, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_Name
-      value: Fertilizer Type
+      value: Fert Type
       objectReference: {fileID: 0}
     - target: {fileID: 5200878037111384602, guid: a856d101ea84d704abf9bb8a8ee0c125, type: 3}
       propertyPath: m_IsActive
@@ -57329,6 +57349,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 442822040}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &2112592831
 MonoBehaviour:

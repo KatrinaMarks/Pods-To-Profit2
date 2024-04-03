@@ -42,7 +42,7 @@ public class TurnManager : MonoBehaviour
        have two choices for sustainable or others; the second choice would be 1.1
      * Note that the tillType2 variable will causes yield changes in the next year/level.It will only have the value 0 or 2.
      * named tillType2 b/c there is an existing tillType variable that we need to look into later.
-     * We also need seedType, seedTreatmentType, and fertilizerType variables for preplant.
+     * We also need seedType, seedTreatmentType, and fertType variables for preplant.
      */
     public int farmingStatus = 0;
     public TMP_Text statusText;
@@ -51,7 +51,7 @@ public class TurnManager : MonoBehaviour
     public float tillType2 = 0;
     public float seedType = 0;
     public float seedTreatmentType = 0;
-    public float fertilizerType = 0;
+    public float fertType = 0;
     
 
     /* We also need GameObject variables for the three possible warnings */
@@ -69,8 +69,16 @@ public class TurnManager : MonoBehaviour
     public GameObject PreplantDecision3;
 
     /* TurnPhaseQuestions game objects so we can set them inactive and active in the code */
+    /* Actually we will prolly just use nextPhase for this */
     public GameObject PreplantQuestions;
     public GameObject PlantingQuestions;
+
+    /* More game objects for the planting phase */
+    // Instruction 2 is second planting phase instusction 
+    public GameObject Instruction2;
+    // shopButton is button to enter shop which also has Blinker.cs attached to it
+    public GameObject ShopButton;
+    public GameObject TillButton;
 
     /* 
      * There are alredy a bunch of weather variables included in the Cotyledon stage,
@@ -136,7 +144,7 @@ public class TurnManager : MonoBehaviour
 
     public float notillPriceModifier = .8f;
     public float notillYieldModifier = .8f;
-    int tillType = 2; //3 = subsoil, 6 = conv, 2 = notill. Indexes into cell graphic array for choosing the correct till tile graphic
+    int tillType = 3; //3 = subsoil, 6 = conv, 2 = notill. Indexes into cell graphic array for choosing the correct till tile graphic
 
     public float rhizoYieldModifier= 1.1f;
     public int rhizoAmount = -50;
@@ -246,6 +254,31 @@ public class TurnManager : MonoBehaviour
       switch(current)
       {
         case TurnPhase.Preplant:
+          /*switch(index)
+          {
+            case 0: // rhizobium
+              inventory.changeMoney(shopPrices[index]);
+              inventory.rhizobium += shopAmounts[index];
+              break;
+            case 1: // pesticides
+              inventory.changeMoney(shopPrices[index]);
+              inventory.pesticides += shopAmounts[index];
+              break;
+            case 2: // seeds
+              inventory.changeMoney(shopPrices[index]);
+              inventory.seeds += shopAmounts[index];
+              Debug.Log(inventory.seeds);
+              break;
+            case 3: // fertilizer
+              inventory.changeMoney(shopPrices[index]);
+              inventory.fert += shopAmounts[index];
+              break;
+            default:
+              break;
+          }*/
+          break;
+
+        case TurnPhase.Planting:
           switch(index)
           {
             case 0: // rhizobium
@@ -258,18 +291,25 @@ public class TurnManager : MonoBehaviour
               break;
             case 2: // seeds
               inventory.changeMoney(shopPrices[index]);
-              inventory.fert += shopAmounts[index];
+              inventory.seeds += shopAmounts[index];
+              Debug.Log(inventory.seeds);
+              /* New shop code we might want to move this code elsewhere later */
+              if (inventory.seeds >= 10) 
+              {
+                // disable shopButton's Blinker.cs and make sure the color is back to normal
+                ShopButton.GetComponent<Blinker>().enabled = false;
+                ShopButton.GetComponent<Image>().color = Color.white;
+                // set instruction 2 to active
+                Instruction2.SetActive(true);
+              }
               break;
             case 3: // fertilizer
               inventory.changeMoney(shopPrices[index]);
-              inventory.seeds += shopAmounts[index];
+              inventory.fert += shopAmounts[index];
               break;
             default:
               break;
           }
-          break;
-
-        case TurnPhase.Planting:
           break;
 
         case TurnPhase.Cotyledon:
@@ -724,7 +764,17 @@ public class TurnManager : MonoBehaviour
     public void tillSelected()
     {
       
-      editor.SelectColor(tillType);
+      // Old code commented out.
+      //editor.SelectColor(tillType);
+
+      TillButton.GetComponent<Image>().color = Color.white;
+      //Make conventional tilling brown and conservation tilling green
+      if (tillType2 == 0) {
+        editor.SelectColor(3);
+      }
+      else if (tillType2 == 2) {
+        editor.SelectColor(2);
+      }
     }
 
     public bool tilling()
@@ -841,7 +891,7 @@ public class TurnManager : MonoBehaviour
      } */
 
      /* (KM) The actual new code for handling preplant decisions and warnings */
-     /* We need to update tillType2, seedType, seedTreatmentType, or fertilizerType */
+     /* We need to update tillType2, seedType, seedTreatmentType, or fertType */
 
      /* We want the player to be able to change these decisions after preplant,
         so choice is used to say which preplant decision gets changed, type is 0, 1, or 2,
@@ -877,10 +927,11 @@ public class TurnManager : MonoBehaviour
       }
       if (choice == 3)
       {
-        fertilizerType = type;
+        fertType = type;
         PreplantDecision3.SetActive(false);
         PreplantQuestions.SetActive(false);
-        PlantingQuestions.SetActive(true);
+        //PlantingQuestions.SetActive(true);
+        nextTurn();
 
       }
       UpdateFarmingStatus();
@@ -902,11 +953,11 @@ public class TurnManager : MonoBehaviour
     public void UpdateFarmingStatus()
     {
       //farmingStatus = status;
-      if(tillType2 >= 2 | seedType >= 2 | seedTreatmentType >= 2 | fertilizerType >= 2)
+      if(tillType2 >= 2 | seedType >= 2 | seedTreatmentType >= 2 | fertType >= 2)
       {
         farmingStatus = 2;
       }
-      else if(tillType2 >= 1 | seedType >= 1 | seedTreatmentType >= 1 | fertilizerType >= 1)
+      else if(tillType2 >= 1 | seedType >= 1 | seedTreatmentType >= 1 | fertType >= 1)
       {
         farmingStatus = 1;
       }
