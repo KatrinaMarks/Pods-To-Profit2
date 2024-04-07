@@ -32,6 +32,7 @@ public class TurnManager : MonoBehaviour
     // public TMP_Text phaseText;
     public GameObject[] turnPanels;
     public InventoryManager inventory;
+    public Stock_Market stock;
 
     /*
      *
@@ -677,6 +678,14 @@ public class TurnManager : MonoBehaviour
         sale.interactable = false;
         current = TurnPhase.Preplant;
       }
+
+      /* next_stock_turn(float direct_change = 0, float delta_change = 0, float variance_change = 0)
+       * next_stock_turn funtion accept three optional values, the default value is 0(no changed)
+       * next_stock_value() funtion calculate the next stock value
+       */
+      float fv = stock.next_stock_value() - stock.stock_value;
+      stock.next_stock_turn(fv, 0, 0);
+
       activeTurn();
     }
 
