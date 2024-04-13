@@ -3,7 +3,7 @@ using UnityEngine;
 /* Info used to generate hexes */
 public static class HexMetrics
 {
-	public const float outerRadius = 10f; //radius of circle around outer points of the hex
+	public const float outerRadius = 13f; //radius of circle around outer points of the hex
 
 	public const float innerRadius = outerRadius * 0.866025404f; //radius of the circle around the inner points of the hex (outer radius * sqrt(3)/2)
 
