@@ -778,7 +778,13 @@ public class TurnManager : MonoBehaviour
     }
 
     public bool tilling()
-    {
+    { /* This old code changes the player's money
+      if(current == TurnPhase.Planting && inventory.money >= perSeedBasePlantPrice)
+      {
+        return inventory.changeMoney(perSeedBasePlantPrice * -1);
+      }
+      return false; */
+      /* This new code changed the amount of seed in inventory */
       if(current == TurnPhase.Planting && inventory.money >= perSeedBasePlantPrice)
       {
         return inventory.changeMoney(perSeedBasePlantPrice * -1);
