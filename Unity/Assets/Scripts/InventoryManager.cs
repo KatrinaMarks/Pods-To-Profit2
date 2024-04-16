@@ -22,6 +22,8 @@ public class InventoryManager : MonoBehaviour
       SUM   // sum 
     }
 
+    public TurnManager turnManager;
+
     public float money = 5000;
     // public Text moneyTextDisplay;
     public int rhizobium = 0;
@@ -38,6 +40,7 @@ public class InventoryManager : MonoBehaviour
      * to which item or status, they're declared above but I haven't used them yet
      */
     public int[][] inventory = new int[3][];
+    public int[][] shopPrices = new int[3][];
     public int curSlider = -1; // index of which slider is currently open (-1 = none) ; updated in toolMenu.cs
 
     public TMP_Text moneyText;
@@ -74,13 +77,15 @@ public class InventoryManager : MonoBehaviour
         shopMoneyText.text = "$" + money;
         // moneyTextDisplay.text = "$" + money.ToString();
  
-        /* Do I even need this? Just initializing the inventory array, but it doesn't
-         * seem like the old group ever fully initialized the menu...[] arrays in TurnManager
-         */
-        /*                         con     sus     org    num                         */
+        /*                         con      sus     org     num                         */
         inventory[0] = new int[4] {0,       0,      0,      0};     // pest
         inventory[1] = new int[4] {0,       0,      0,      0};     // seed
         inventory[2] = new int[4] {0,       0,      0,      0};     // fert
+
+        /*                          con     sus     org                         */
+        shopPrices[0] = new int[3] {20,     20,     20};     // pest
+        shopPrices[1] = new int[3] {50,     50,     50};     // seed
+        shopPrices[2] = new int[3] {20,     20,     20};     // fert
     }
 
     // Update is called once per frame
@@ -145,7 +150,8 @@ public class InventoryManager : MonoBehaviour
     public void changeInventory(string typeStatusAmount) {
         int type = typeStatusAmount[0] - '0';
         int status = typeStatusAmount[1] - '0';
-        int amount = typeStatusAmount[2] - '0';
+        char sign = typeStatusAmount[2];
+        int amount = typeStatusAmount[3] - '0';
         // string output = string.Format("Integers: {0}, {1}, {2}", type, status, amount);
         // Debug.Log(output);
         /* If negative amount, also need to have enough in inventory, or if positive amount,
@@ -159,6 +165,34 @@ public class InventoryManager : MonoBehaviour
             // inupt some form of error message that there is not enough money or items left
             // return false;
         }
+        bool warning = false;
+        if (sign == '+') {
+            if (money >= (amount * shopPrices[type][status])) {
+                // there will probably need to be more here that depends on how the player interacts with the warning:
+                //      if "ok":    continue to money-- and inv++
+                //      if "back":  break; 
+                // if implemented like this, remove the "else" so break; would just jump out of if(money) to skip money-- and inv++... I think...
+
+                // either that or we just have the "ok" button essentially recall this function 
+                //      theoretically would work since farmingStatus should already have been updated (race condition?)
+                if (turnManager.farmingStatus < status) { 
+                    turnManager.GiveWarning(status); 
+                } else { 
+                    money -= amount * shopPrices[type][status];
+                    inventory[type][status] += amount;
+                }
+            } else {
+                // error message: "Not enough money"
+            }
+
+        } else {
+            if (inventory[type][status] >= amount) {
+                inventory[type][status] -= amount;
+            } else {
+                // error message: "Not enough of {item} in inventory"
+            }
+        }
+
     }
 
     public void testFunc(string test) {
