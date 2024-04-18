@@ -16,6 +16,8 @@ public class stageProgressBar : MonoBehaviour
     public float lerpedPos;
     float startPos = 445;
     float endPos = 773;
+    public float[] positions = new float[10];
+    int index = 0;
     public GameObject progBar;
 
     // Start is called before the first frame update
@@ -27,18 +29,22 @@ public class stageProgressBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timeElapsed < duration) {
-            float t = timeElapsed / duration;
-            lerpedColor = Color.Lerp(brown, green, t);
-            lerpedPos = Mathf.Lerp(startPos, endPos, t);
-            timeElapsed += Time.deltaTime;
-        } else {
-            lerpedColor = green;
-            lerpedPos = endPos;
-        }
+        // if (timeElapsed < duration) {
+        //     float t = timeElapsed / duration;
+        //     lerpedColor = Color.Lerp(brown, green, t);
+        //     lerpedPos = Mathf.Lerp(startPos, endPos, t);
+        //     timeElapsed += Time.deltaTime;
+        // } else {
+        //     lerpedColor = green;
+        //     lerpedPos = endPos;
+        // }
 
-        progBar.GetComponent<Image>().color = lerpedColor;
-        progBar.transform.localPosition = new Vector3(lerpedPos, progBar.transform.localPosition.y, 0);
+        // progBar.GetComponent<Image>().color = lerpedColor;
+        // progBar.transform.localPosition = new Vector3(lerpedPos, progBar.transform.localPosition.y, 0);
+        
+        if (index >= 10) index -= 10;
+        progBar.transform.localPosition = new Vector3(positions[index], progBar.transform.localPosition.y, 0);
+        
         /*
         // if (timeLeft <= Time.deltaTime)
         // {
@@ -65,5 +71,9 @@ public class stageProgressBar : MonoBehaviour
         // progBar.color = newColor;
         // if (colorShift) changeColor();
         */
+    }
+
+    public void nextStage(int i) {
+        index += i;
     }
 }
