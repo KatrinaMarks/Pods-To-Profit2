@@ -206,6 +206,12 @@ public class TurnManager : MonoBehaviour
     public int[] shopPrices;
     public int[] shopAmounts;
 
+
+
+    // (KM) adding Cotyledon game object
+    public GameObject cotyledon;
+    public GameObject vegetative;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -495,8 +501,9 @@ public class TurnManager : MonoBehaviour
                  Check HexCell and HexDirection scripts for more info.)
           */
           tiller.interactable = false;
+          cotyledon.SetActive(true);
 
-          text = "Looks like disease isn't a problem!";
+          //text = "Looks like disease isn't a problem!";
 
           plants = GameObject.FindGameObjectsWithTag("Plant");
           foreach(GameObject p in plants)
@@ -530,7 +537,8 @@ public class TurnManager : MonoBehaviour
             THINGS FOR THIS PHASE
               Chance of Disease (Root or foliar), insect (Lepidopteran, Coleoptera, Aphids. Root or foliar), and Weed problems.
           */
-          text = "Looks like disease isn't a problem!";
+          //text = "Looks like disease isn't a problem!";
+          vegetative.SetActive(true);
 
           if(UnityEngine.Random.Range(0f, 1f) >= diseaseChance)
           {
