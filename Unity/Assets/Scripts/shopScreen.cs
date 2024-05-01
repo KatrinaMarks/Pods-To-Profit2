@@ -15,9 +15,12 @@ public class shopScreen : MonoBehaviour
      */
     public GameObject[] displayObjects = new GameObject[5];
     public Button[] displayButtons = new Button[5];
+    public GameObject[] subdisplayObjects = new GameObject[3];
+    public Button[] subdisplayButtons = new Button[3];
     public Sprite active;
     public Sprite inactive;
     int curIndex = 1;   // current index -- this needs to match the index of the starting display
+    int curSubIndex = 0;   // current subdisplay index -- this needs to match the index of the starting subdisplay
 
     // Start is called before the first frame update
     void Start()
@@ -41,5 +44,16 @@ public class shopScreen : MonoBehaviour
         displayButtons[index].image.sprite = active;
         // updates the current index so the next call hides the current display appropiately
         curIndex = index;
+    }
+
+    public void updateSubdisplay(int index) {
+        // hides the current subdisplay and changes the button back to inactive
+        subdisplayObjects[curSubIndex].SetActive(false);
+        subdisplayButtons[curSubIndex].image.sprite = inactive;
+        // shows the new subdisplay and changes the button to active
+        subdisplayObjects[index].SetActive(true);
+        subdisplayButtons[index].image.sprite = active;
+        // updates the current index so the next call hides the current subdisplay appropiately
+        curSubIndex = index;
     }
 }

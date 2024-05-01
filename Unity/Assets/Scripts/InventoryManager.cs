@@ -39,8 +39,8 @@ public class InventoryManager : MonoBehaviour
      * I plan on using ENUMs for both of these so we don't have to memorize which number corresponds 
      * to which item or status, they're declared above but I haven't used them yet
      */
-    public int[][] inventory = new int[3][];
-    public int[][] shopPrices = new int[3][];
+    public int[][] inventory = new int[6][];
+    public int[][] shopPrices = new int[6][];
     public int curSlider = -1; // index of which slider is currently open (-1 = none) ; updated in toolMenu.cs
 
     public TMP_Text moneyText;
@@ -81,11 +81,17 @@ public class InventoryManager : MonoBehaviour
         inventory[0] = new int[4] {0,       0,      0,      0};     // pest
         inventory[1] = new int[4] {0,       0,      0,      0};     // seed
         inventory[2] = new int[4] {0,       0,      0,      0};     // fert
+        inventory[3] = new int[4] {0,       0,      0,      0};     // fung
+        inventory[3] = new int[4] {0,       0,      0,      0};     // insc
+        inventory[4] = new int[4] {0,       0,      0,      0};     // herb
 
         /*                          con     sus     org                         */
         shopPrices[0] = new int[3] {20,     20,     20};     // pest
         shopPrices[1] = new int[3] {50,     50,     50};     // seed
         shopPrices[2] = new int[3] {20,     20,     20};     // fert
+        shopPrices[3] = new int[3] {20,     20,     20};     // fung
+        shopPrices[4] = new int[3] {20,     20,     20};     // insc
+        shopPrices[5] = new int[3] {20,     20,     20};     // herb
     }
 
     // Update is called once per frame
@@ -151,7 +157,9 @@ public class InventoryManager : MonoBehaviour
         int type = typeStatusAmount[0] - '0';
         int status = typeStatusAmount[1] - '0';
         char sign = typeStatusAmount[2];
-        int amount = typeStatusAmount[3] - '0';
+        // int amount = typeStatusAmount[3] - '0';
+        int amount = Int32.Parse(typeStatusAmount.Substring(3));
+        Debug.Log("amount: " + amount);
         // string output = string.Format("Integers: {0}, {1}, {2}", type, status, amount);
         // Debug.Log(output);
         /* If negative amount, also need to have enough in inventory, or if positive amount,
