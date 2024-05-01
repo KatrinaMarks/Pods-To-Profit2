@@ -49,10 +49,10 @@ public class shopScreen : MonoBehaviour
     public void updateSubdisplay(int index) {
         // hides the current subdisplay and changes the button back to inactive
         subdisplayObjects[curSubIndex].SetActive(false);
-        subdisplayButtons[curSubIndex].image.sprite = inactive;
+        //subdisplayButtons[curSubIndex].image.sprite = inactive;
         // shows the new subdisplay and changes the button to active
         subdisplayObjects[index].SetActive(true);
-        subdisplayButtons[index].image.sprite = active;
+        //subdisplayButtons[index].image.sprite = active;
         // updates the current index so the next call hides the current subdisplay appropiately
         curSubIndex = index;
     }

@@ -795,6 +795,7 @@ public class TurnManager : MonoBehaviour
       /* This new code changed the amount of seed in inventory */
       if(current == TurnPhase.Planting && inventory.money >= perSeedBasePlantPrice)
       {
+        Debug.Log("tilling() inv.changeMoney()");
         return inventory.changeMoney(perSeedBasePlantPrice * -1);
       }
       return false;

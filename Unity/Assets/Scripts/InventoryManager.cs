@@ -41,6 +41,7 @@ public class InventoryManager : MonoBehaviour
      */
     public int[][] inventory = new int[6][];
     public int[][] shopPrices = new int[6][];
+    public TMP_Text[] shopInvTexts = new TMP_Text[9];
     public int curSlider = -1; // index of which slider is currently open (-1 = none) ; updated in toolMenu.cs
 
     public TMP_Text moneyText;
@@ -77,21 +78,21 @@ public class InventoryManager : MonoBehaviour
         shopMoneyText.text = "$" + money;
         // moneyTextDisplay.text = "$" + money.ToString();
  
-        /*                         con      sus     org     num                         */
+        /*                         org      sus     con     num                         */
         inventory[0] = new int[4] {0,       0,      0,      0};     // pest
         inventory[1] = new int[4] {0,       0,      0,      0};     // seed
         inventory[2] = new int[4] {0,       0,      0,      0};     // fert
         inventory[3] = new int[4] {0,       0,      0,      0};     // fung
-        inventory[3] = new int[4] {0,       0,      0,      0};     // insc
-        inventory[4] = new int[4] {0,       0,      0,      0};     // herb
+        inventory[4] = new int[4] {0,       0,      0,      0};     // insc
+        inventory[5] = new int[4] {0,       0,      0,      0};     // herb
 
-        /*                          con     sus     org                         */
-        shopPrices[0] = new int[3] {20,     20,     20};     // pest
-        shopPrices[1] = new int[3] {50,     50,     50};     // seed
-        shopPrices[2] = new int[3] {20,     20,     20};     // fert
-        shopPrices[3] = new int[3] {20,     20,     20};     // fung
-        shopPrices[4] = new int[3] {20,     20,     20};     // insc
-        shopPrices[5] = new int[3] {20,     20,     20};     // herb
+        /*                          org     sus     con                         */
+        shopPrices[0] = new int[3] {-20,    -20,    -20};     // pest
+        shopPrices[1] = new int[3] {-50,    -50,    -50};     // seed
+        shopPrices[2] = new int[3] {-20,    -20,    -20};     // fert
+        shopPrices[3] = new int[3] {-20,    -20,    -20};     // fung
+        shopPrices[4] = new int[3] {-20,    -20,    -20};     // insc
+        shopPrices[5] = new int[3] {-20,    -20,    -20};     // herb
     }
 
     // Update is called once per frame
@@ -165,15 +166,15 @@ public class InventoryManager : MonoBehaviour
         /* If negative amount, also need to have enough in inventory, or if positive amount,
          * then just change inventory as needed and return true, else return false
          */
-        if ((amount < 0 && inventory[type][status] > 0) || amount > 0) {
-            if (inventory[type][status] == 0) inventory[type][3]++;
-            inventory[type][status] += amount;
-            // return true; 
-        } else {
-            // inupt some form of error message that there is not enough money or items left
-            // return false;
-        }
-        bool warning = false;
+        // if ((amount < 0 && inventory[type][status] > 0) || amount > 0) {
+        //     if (inventory[type][status] == 0) inventory[type][inventory[type].Length - 1]++;
+        //     inventory[type][status] += amount;
+        //     // return true; 
+        // } else {
+        //     // inupt some form of error message that there is not enough money or items left
+        //     // return false;
+        // }
+        // bool warning = false;
         if (sign == '+') {
             if (money >= (amount * shopPrices[type][status])) {
                 // there will probably need to be more here that depends on how the player interacts with the warning:
@@ -186,8 +187,12 @@ public class InventoryManager : MonoBehaviour
                 if (turnManager.farmingStatus < status) { 
                     turnManager.GiveWarning(status); 
                 } else { 
-                    money -= amount * shopPrices[type][status];
+                    changeMoney(amount * shopPrices[type][status]);
                     inventory[type][status] += amount;
+                    if (type <= 2 && inventory[type][status] == 0) inventory[type][3]++;
+                    else if (type > 2) {
+                        shopInvTexts[((type - 3) * 2) + status].text = "x" + inventory[type][status] + " in Inventory";
+                    }
                 }
             } else {
                 // error message: "Not enough money"
