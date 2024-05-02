@@ -85,11 +85,13 @@ public class stageProgressBar : MonoBehaviour
          * inside the cells in the graphic above. 
          */
         switch (turnManager.current) {
+            // each case follows the exact same logic as this one
             case TurnPhase.Planting:
+                // if the player buys seeds for the first time in Planting phase, advance progBar
                 if (i == 0 && !seedBought) {
                     seedBought = true;
                     nextStage();
-                // If the player tills for the first time in Planting phase, advance progBar
+                // if the player tills for the first time in Planting phase, advance progBar
                 } else if (i == 1 && !tilled) {
                     tilled = true;
                     nextStage();
@@ -107,18 +109,22 @@ public class stageProgressBar : MonoBehaviour
                 if (i == 0 && !inscBought) {
                     inscBought = true;
                     nextStage();
-                // If the player tills for the first time in Planting phase, advance progBar
                 } else if (i == 1 && !fungBought) {
                     fungBought = true;
                     nextStage();
                 }
                 break;
-
+            /*
+             * These two phases don't have individual pop-ups implemented for them yet, just 
+             * the original screen with all events on it, so just advance the progBar all the
+             * way through each event in the respective phase. Assuming nothing changes with
+             * the events (the number of them or what they are), these two phases should also
+             * follow the exact same logic as those above. 
+             */
             case TurnPhase.Fertilizer:
                 nextStage();
                 nextStage();
                 break;
-
             case TurnPhase.Reproductive:
                 nextStage();
                 nextStage();
@@ -128,38 +134,25 @@ public class stageProgressBar : MonoBehaviour
             default:
                 break;
         }
-    
-
-        // if (turnManager.current == TurnPhase.Planting) {
-        //     // If the player buys a seed for the first time in Planting phase, advance progBar
-        //     if (i == 0 && !bought) {
-        //         bought = true;
-        //         nextStage();
-        //     // If the player tills for the first time in Planting phase, advance progBar
-        //     } else if (i == 1 && !tilled) {
-        //         tilled = true;
-        //         nextStage();
-        //     }
-        // }
     }
 
+    // moves the progBar to the next position in the array, cycling back to the start if needed
     public void nextStage() {
         index++;
         if (index == positions.Length) index = 0;
-        // Debug.Log("nextStage clicked");
         progBar.transform.localPosition = new Vector3(positions[index], progBar.transform.localPosition.y, 0);
     }
 
     /*
      * I haven't implemented them anywhere yet, but the idea behind these was to have a way to 
-     * jump to either the next stage or a specific stage without having to click through all the
+     * jump to either the next phase or a specific phase without having to click through all the
      * stuff in between -- would be just a dev tool, not an actual feature 
      */
-    public void setStagePosition(int i) {
+    public void setPhasePosition(int i) {
         progBar.transform.localPosition = new Vector3(stagePositions[index], progBar.transform.localPosition.y, 0);
     }
 
-    public void nextStagePosition() {
+    public void nextPhasePosition() {
         stageIndex++;
         if (stageIndex == 6) stageIndex = 0;
         progBar.transform.localPosition = new Vector3(stagePositions[stageIndex], progBar.transform.localPosition.y, 0);
