@@ -7,21 +7,6 @@ using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
-    
-    public enum items {
-      PEST,     // bio pesticides
-      RHIZ,     // rhoizobium
-      FERT,     // fertilzier 
-      SEED      // seeds
-    }
-
-    public enum status {
-      CON,  // conventional
-      SUS,  // sustainable
-      ORG,  // organic
-      SUM   // sum 
-    }
-
     public TurnManager turnManager;
 
     public float money = 600000;
@@ -31,18 +16,14 @@ public class InventoryManager : MonoBehaviour
     public int fert = 0;
     public int seeds = 0;
 
-    // use a 2D array instead of individual variables to also keep track for the statuses?
+    public int[][] inventory = new int[5][];
+    public int[][] shopPrices = new int[5][];
+    public int tillingCost = 7;
+    public int scoutingCost = 7;
 
-    /* 2D array for the inventory, first index (row) is the type of item (seed, fertilizer, etc)
-     * and the second index (column) is the status (conventional, sustainable, organic). The fourth
-     * column of each row is for the sliders in the toolbar, it is just how many types to display. 
-     * I plan on using ENUMs for both of these so we don't have to memorize which number corresponds 
-     * to which item or status, they're declared above but I haven't used them yet
-     */
-    public int[][] inventory = new int[6][];
-    public int[][] shopPrices = new int[6][];
+    string savedInput;
+
     public TMP_Text[] shopInvTexts = new TMP_Text[9];
-    public int curSlider = -1; // index of which slider is currently open (-1 = none) ; updated in toolMenu.cs
 
     public TMP_Text moneyText;
     public TMP_Text shopMoneyText;
@@ -53,46 +34,50 @@ public class InventoryManager : MonoBehaviour
     public bool ownTractor = false;
     public bool brokenTractor = false;
 
-    [Header("Slider Texts")]
-    public Image testImage;
-    public GameObject testObject;
-    /* 
-     * 0 - 2 = pest slots 1 - 3
-     * 3 - 5 = seed slots 1 - 3
-     * 6 - 8 = fert slots 1 - 3
-     */
-    public GameObject[] sliderSlots = new GameObject[9];
-
-    // [Header("Shop Buttons")]
-    // public Button buySeedConButton;
-    // public Button buySeedSusButton;
-    // public Button buySeedOrgButton;
-    // public Button buyFertConButton;
-    // public Button buyFertSusButton;
-    // public Button buyFertOrgButton;
-
     // Start is called before the first frame update
     void Start()
     {
         moneyText.text = "$" + money;
         shopMoneyText.text = "$" + money;
-        // moneyTextDisplay.text = "$" + money.ToString();
- 
-        /*                         org      sus     con     num                         */
-        inventory[0] = new int[4] {0,       0,      0,      0};     // pest
-        inventory[1] = new int[4] {0,       0,      0,      0};     // seed
-        inventory[2] = new int[4] {0,       0,      0,      0};     // fert
-        inventory[3] = new int[4] {0,       0,      0,      0};     // fung
-        inventory[4] = new int[4] {0,       0,      0,      0};     // insc
-        inventory[5] = new int[4] {0,       0,      0,      0};     // herb
 
-        /*                          org     sus     con                         */
-        shopPrices[0] = new int[3] {-20,    -20,    -20};     // pest
-        shopPrices[1] = new int[3] {-50,    -50,    -50};     // seed
-        shopPrices[2] = new int[3] {-20,    -20,    -20};     // fert
-        shopPrices[3] = new int[3] {-20,    -20,    -20};     // fung
-        shopPrices[4] = new int[3] {-20,    -20,    -20};     // insc
-        shopPrices[5] = new int[3] {-20,    -20,    -20};     // herb
+        /*
+         * These are a bit complicated, but I'm gonna do my to explain how they're set up.
+         * The first index (row) is always the type of item (the side comments below) and the
+         * second index (column) is the nth choice of that item, organized by status (org ->
+         * con). The last column of each row is for the sliders in the toolbar, it is just
+         * how many slots to display (see the explanation in toolMenu.cs).
+         *
+         * As a side note, the idea beheind using arrays for these, particularly shopPrices,
+         * was to create an easy way to add more crops in future renditions of this game. In
+         * theory, all you have to do is copy/paste the array and update the prices for that
+         * crop. If you do add more crops, I would make a crop class and make shopPrices[] a
+         * member variable, so you can update the functions to just index into the specific
+         * class corresponding to whatever crop the player chose to plant that year.
+         *
+         * Side note number two: I ran out of time, but I planned on making an third array,
+         * structured the same way, for the yield percentages that come with each item. For
+         * the same reasoning, this array could just be copy/paste/edited and would be in the
+         * crop class.
+         */
+
+        /*                        1st      2nd     3rd     num                        */
+        inventory[0] = new int[4] {0,       0,      0,      0};     // seed
+        /*                        1st      2nd     num                        */
+        inventory[1] = new int[3] {0,       0,      0};     // fert
+        inventory[2] = new int[3] {0,       0,      0};     // fung
+        inventory[3] = new int[3] {0,       0,      0};     // insc
+        inventory[4] = new int[3] {0,       0,      0};     // herb
+
+        // 0: seed : { organic (o), conventional (s), GMO (s) }
+        shopPrices[0] = new int[3] {-75,    -50,    -80};
+        // 1: fert : { organic (o), inorganic (c) }
+        shopPrices[1] = new int[2] {-40,    -80};
+        // 2: fung : { organic (o), inorganic (c) }
+        shopPrices[2] = new int[2] {-20,    -10};
+        // 3: insc : { organic (o), inorganic (c) }
+        shopPrices[3] = new int[2] {-30,    -15};
+        // 4: herb : { organic (o), inorganic (c) }
+        shopPrices[4] = new int[2] {-50,    -25};
     }
 
     // Update is called once per frame
@@ -101,114 +86,98 @@ public class InventoryManager : MonoBehaviour
         // rText.text = "Rhizobium: " + rhizobium;
         // pText.text = "BioPesticides: " + pesticides;
         // fText.text = "Fertilizer: " + fert;
-
-        if (curSlider > -1 && inventory[curSlider][3] > 0) {
-            int i = 0; // the while() loops until i is the index of a status that is > 0
-            // if only one slot showing, find which type and display its image and number
-            if (inventory[curSlider][3] <= 1) {
-                while (inventory[curSlider][i] == 0) i++;
-                sliderSlots[curSlider * 3].GetComponentsInChildren<Image>()[1].enabled = true;
-                sliderSlots[curSlider * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][i];
-            // else if only two showing, find and display the two > 0
-            } else if (inventory[curSlider][3] == 2) {
-                while (inventory[curSlider][i] == 0) i++;
-                sliderSlots[curSlider * 3].GetComponentsInChildren<Image>()[1].enabled = true;
-                sliderSlots[curSlider * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][i++];
-                while (inventory[curSlider][i] == 0) i++;
-                sliderSlots[(curSlider * 3) + 1].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][i];
-            // else all three showing so display accordingly
-            } else {
-                sliderSlots[curSlider * 3].GetComponentsInChildren<Image>()[1].enabled = true;
-                sliderSlots[curSlider * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][0];
-                sliderSlots[(curSlider * 3) + 1].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][1];
-                sliderSlots[(curSlider * 3) + 2].GetComponentInChildren<TMP_Text>().text = "x" + inventory[curSlider][2];
-            }
-        }
     }
 
-    /* Adds to money. Pass in negative amount to subtract */
-    public bool changeMoney(float amt)
-    {
-      /* I believe this if statement makes sure that if a negative amount is passed in,
-       * therein subtracting from the total money, then the transaction is only allowed 
-       * if and only if the amount to be subtracted is not greater than the current balance.
-       * With this returning false, it may already exist (I just haven't looked for it yet),
-       * but we should double check that there is some sore of feedback if this if statement is
-       * false -- i.e. "Not enough money" warning
-       */
-      if(amt >= 0 || money >= Math.Abs(amt))
-      {
-        money += amt;
+    /*
+     * Updates money variable and the money texts (both in the top UI bar, just one for in
+     * the main screen and another for in the shop screen) as necessary.
+     *
+     * As a side note/warning, this function was originally used by the old shopButtonFunc()
+     * in TurnManager.cs, but we completely changed how the shop and inventory work so I
+     * wrote a different function that the shop buttons call, changeInventory(), which is
+     * defined below. The original version of this function returned a bool dependant upon
+     * whether the player had enough money left to make the purchase. This check is already
+     * handled in changeInventory() so I deleted that and made this return void instead.
+     * We had not used shopButtonFunc() at all anymore, but I didn't change the return type
+     * until the day before our showcase, so this may cause warnings that I did not think of
+     * and could not find in the short time I had left. If this function is giving some error,
+     * this is the first thing that I would check.
+     */
+    public void changeMoney(float amount) {
+        money += amount;
         moneyText.text = "$" + money;
         shopMoneyText.text = "$" + money;
-        return true;
-      }
-      return false;
     }
 
-    /* Adds and subtracts from the inventory -- positive amount to add, negative to subtract
-     * type and status parameters so that we only need one function for every button/action
-     * that interacts with the inventory. 
+    /*
+     * The parameter is a string because only functions with one parameter show up in the
+     * Unity editor... for whatever reason... and I figured using one string to hold all the
+     * needed parameters would be way easier than programming onClick for each button. There
+     * very well could be a smarter workaround, but this was the best I could think of.
      *
-     * The parameter is a string because only functions with one parameter show up in the Unity
-     * editor... for whatever reason... and I found using one string as a sequence of integers
-     * to be easier and more efficient than programming onClick for each button.
+     * The string holds four total parameters, which are all self explanatory, but I'll
+     * define them here anyways:
+     * type : index for the row of inventory[] and shopPrices[]
+     * choice : index for the column of inventory[] and shopPrices[]
+     * sign : add or subtract from inventory[]
+     * amount : the amount to be added/subtracted to/from inventory[]
      */
-    public void changeInventory(string typeStatusAmount) {
-        int type = typeStatusAmount[0] - '0';
-        int status = typeStatusAmount[1] - '0';
-        char sign = typeStatusAmount[2];
-        // int amount = typeStatusAmount[3] - '0';
-        int amount = Int32.Parse(typeStatusAmount.Substring(3));
-        Debug.Log("amount: " + amount);
-        // string output = string.Format("Integers: {0}, {1}, {2}", type, status, amount);
-        // Debug.Log(output);
-        /* If negative amount, also need to have enough in inventory, or if positive amount,
+    public void changeInventory(string typeChoiceStatusAmount) {
+        /*
+         * if the input string is "!" then this is from a warning popup where the player has
+         * clicked the "ok" button, which essentially just reruns this function after the
+         * farming status has been downgraded to not flag the error again -- is like this
+         * so the player doesn't have to click "buy" again after saying ok to the popup
+         */
+        if (typeChoiceStatusAmount == "!") {
+            typeChoiceStatusAmount = savedInput;
+        }
+        int type = typeChoiceStatusAmount[0] - '0';
+        int choice = typeChoiceStatusAmount[1] - '0';
+        int status = typeChoiceStatusAmount[2] - '0';
+        char sign = typeChoiceStatusAmount[3];
+        int amount = Int32.Parse(typeChoiceStatusAmount.Substring(4));
+
+        /*
+         * If negative amount, also need to have enough in inventory, or if positive amount,
          * then just change inventory as needed and return true, else return false
          */
-        // if ((amount < 0 && inventory[type][status] > 0) || amount > 0) {
-        //     if (inventory[type][status] == 0) inventory[type][inventory[type].Length - 1]++;
-        //     inventory[type][status] += amount;
-        //     // return true; 
-        // } else {
-        //     // inupt some form of error message that there is not enough money or items left
-        //     // return false;
-        // }
         // bool warning = false;
         if (sign == '+') {
-            if (money >= (amount * shopPrices[type][status])) {
+            if (money >= (amount * shopPrices[type][choice])) {
                 // there will probably need to be more here that depends on how the player interacts with the warning:
                 //      if "ok":    continue to money-- and inv++
-                //      if "back":  break; 
+                //      if "back":  break;
                 // if implemented like this, remove the "else" so break; would just jump out of if(money) to skip money-- and inv++... I think...
 
-                // either that or we just have the "ok" button essentially recall this function 
+                // either that or we just have the "ok" button essentially recall this function
                 //      theoretically would work since farmingStatus should already have been updated (race condition?)
-                if (turnManager.farmingStatus < status) { 
-                    turnManager.GiveWarning(status); 
-                } else { 
-                    changeMoney(amount * shopPrices[type][status]);
-                    inventory[type][status] += amount;
-                    if (type <= 2 && inventory[type][status] == 0) inventory[type][3]++;
-                    else if (type > 2) {
-                        shopInvTexts[((type - 3) * 2) + status].text = "x" + inventory[type][status] + " in Inventory";
+
+                if (turnManager.farmingStatus < status) {
+                    savedInput = typeChoiceStatusAmount;
+                    turnManager.GiveShopWarning(status);
+                } else {
+                    if (type <= 1 && inventory[type][choice] == 0) {
+                        // Debug.Log("num++: " + inventory[type][inventory[type].Length - 1]);
+                        inventory[type][inventory[type].Length - 1]++;
+                    } else if (type > 1) {
+                        // Debug.Log("index: " + (((type - 2) * 2) + choice));
+                        shopInvTexts[((type - 2) * 2) + choice].text = "x" + inventory[type][choice] + " in Inventory";
                     }
+                    changeMoney(amount * shopPrices[type][choice]);
+                    inventory[type][choice] += amount;
+                    Debug.Log("t: " + type + " ; c: " + choice + " ; inv: " + inventory[type][choice]);
                 }
             } else {
                 // error message: "Not enough money"
             }
 
         } else {
-            if (inventory[type][status] >= amount) {
-                inventory[type][status] -= amount;
+            if (inventory[type][choice] >= amount) {
+                inventory[type][choice] -= amount;
             } else {
                 // error message: "Not enough of {item} in inventory"
             }
         }
-
-    }
-
-    public void testFunc(string test) {
-        
     }
 }

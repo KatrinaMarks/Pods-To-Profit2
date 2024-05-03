@@ -59,6 +59,10 @@ public class TurnManager : MonoBehaviour
     public GameObject OrgToSusWarning;
     public GameObject SusToConWarning;
 
+    public GameObject ShopOrgToConvWarning;
+    public GameObject ShopOrgToSusWarning;
+    public GameObject ShopSusToConWarning;
+
     /* Finally we need a variable saying what decision/choice the player is on, making the warning flow easier to connect */
     public string decision = "66";
 
@@ -344,15 +348,15 @@ public class TurnManager : MonoBehaviour
       }
     }
 
-    public void buyTractor(GameObject button)
-    {
-      if(inventory.changeMoney(-10000))
-      {
-        inventory.ownTractor = true;
-        button.SetActive(false);
-        updatePerks("Tractor");
-      }
-    }
+    // public void buyTractor(GameObject button)
+    // {
+    //   if(inventory.changeMoney(-10000))
+    //   {
+    //     inventory.ownTractor = true;
+    //     button.SetActive(false);
+    //     updatePerks("Tractor");
+    //   }
+    // }
 
     void destroyPlant()
     {
@@ -796,7 +800,8 @@ public class TurnManager : MonoBehaviour
       if(current == TurnPhase.Planting && inventory.money >= perSeedBasePlantPrice)
       {
         Debug.Log("tilling() inv.changeMoney()");
-        return inventory.changeMoney(perSeedBasePlantPrice * -1);
+        inventory.changeMoney(perSeedBasePlantPrice * -1);
+        return true;
       }
       return false;
     }
@@ -1009,6 +1014,55 @@ public class TurnManager : MonoBehaviour
       }
     }
     /* (KM) End of the code for handling preplant decisions and warnings */
+
+    /*
+     * This is literally just a copy of GiveWarning() that Kat wrote, I just needed a
+     * seperate function to handle the shop warnings so I didn't have to change 
+     * GiveWarning() and add a bunch of stuff elsewhere. If (when) you add warnings 
+     * elsewhere, I would get rid of this function and make the necessary changes and 
+     * additions so that GiveWarning() checks the stage/screen to know which warning to
+     * activate. You need different warnings for each one because the warnings to 
+     * different things depending on when they're given, even if in-game they look the 
+     * exact same (the buttons call differnt functions). 
+     *
+     * If you can't tell, I've already thought through exactly how I would do
+     * this, so if you want my input, just reach out.
+     */
+    public void GiveShopWarning(int potentialStatus) 
+    {
+      // If the potential new status is greater than current farming status set warning to active
+      // Remember org = 0, sus = 1, and con = 2 
+
+      // If status is organic and potential status is conventional
+      if(farmingStatus == 0 & potentialStatus >= 2)
+      {
+        ShopOrgToConvWarning.SetActive(true);
+      }
+
+      // If status is organic and potential status is sustainable
+      else if(farmingStatus == 0 & potentialStatus >= 1 & potentialStatus < 2)
+      {
+        ShopOrgToSusWarning.SetActive(true);
+      }
+
+      // If status is sustainable and potential status is conventional 
+      else if(farmingStatus == 1 & potentialStatus >= 2)
+      {
+        ShopSusToConWarning.SetActive(true);
+      }
+    }
+
+    /*
+     * This just sets the farmingStatus to whatever is fed into it. Right now it's just 
+     * used by the shop warnings, but it will probably be needed if you add any other 
+     * warnings elsewhere  
+     */
+
+    public void setFarmingStatus(int status) {
+      farmingStatus = status;
+      statusText.text = statuses[farmingStatus];
+      statusText.color = statusColors[farmingStatus];
+    }
 
     /* We want different game objects to blink to indicate that the player should click on them */
     

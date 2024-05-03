@@ -36,13 +36,7 @@ public class toolMenu : MonoBehaviour
 
     public InventoryManager invMan;
 
-    // Haven't decided if I want to move the logic for these here from InventoryManager
-    // [Header("Slider Texts")]
-    // public TMP_Text fertSlot1Text; 
-    // public TMP_Text fertSlot2Text; 
-    // public TMP_Text fertSlot3Text; 
-
-    int index = 0; // 0 = pest ; 1 = seed ; 2 = fert
+    int index = -1; // -1 = none open ; 0 = seed ; 1 = fert ; 2 = pest
     public float moveSpeed = 500;   // simply how fast the tool menu moves up/down
 
     // The three x values for the sliders (pest, seed, & fert)
@@ -68,6 +62,20 @@ public class toolMenu : MonoBehaviour
     // public Vector3 downPos = new Vector3(985, -350, 0);
     // public Vector3 upPos2 = new Vector3(25, -290, 0);
     // public Vector3 downPos2 = new Vector3(25, -600, 0);
+
+    /*
+     * 0 - 2 = seed slots 1 - 3
+     * 3 - 5 = fert slots 1 - 3
+     * 6 - 8 = pest slots 1 - 3
+     */
+    public GameObject[] sliderSlots = new GameObject[9];
+
+    /*
+     * I don't yet have the actual sprites for the three choices of seeds, so when you get
+     * them you will need to attach them here as well as putting them in the seeds display
+     * in the shop screen. The code using these is already written and working
+     */
+    public Sprite[] sliderSprites = new Sprite[5];
    
 
     // Start is called before the first frame update
@@ -79,19 +87,20 @@ public class toolMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Moves the tool menu extension up/down depending on the status of menuBool
+        // Moves the tool menu extension up/down depending on menuBool
         if (menuBool == false && transform.position.y > -65) {
             transform.Translate(Vector3.down * moveSpeed * Time.deltaTime);
             // set all three to false to close the sliders
             invBools[0] = false;
             invBools[1] = false;
             invBools[2] = false;
-            invMan.curSlider = -1;
+            index = -1;
         } else if (menuBool == true && transform.position.y < 248) {
             transform.Translate(Vector3.up * moveSpeed * Time.deltaTime);
         }
 
-        if (invBools[index] == false) {
+        // moves the indexed slider out/in depending on its bool 
+        if (index > -1 && invBools[index] == false) {
             // close slider at index
             if (sliders[index].transform.localPosition.x < 1033)    
                 sliders[index].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
@@ -100,11 +109,15 @@ public class toolMenu : MonoBehaviour
                 sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  
                 sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
-        } else if (invBools[index] == true) {
+        } else if (index > -1 && invBools[index] == true) {
             // checks sum of types to set how far to open the slider
-            if (invMan.inventory[index][3] <= 1)        pos = showOne;
-            else if (invMan.inventory[index][3] == 2)   pos = showTwo;
-            else                                        pos = showThree;
+            if (invMan.inventory[index][invMan.inventory[index].Length - 1] <= 1) {
+                pos = showOne;      
+            } else if (invMan.inventory[index][invMan.inventory[index].Length - 1] == 2) {
+                pos = showTwo;
+            } else {
+                pos = showThree;    
+            }                                                                            
             
             // open slider at index
             if (sliders[index].transform.localPosition.x > pos)     
@@ -114,6 +127,36 @@ public class toolMenu : MonoBehaviour
                 sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  
                 sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        }
+
+        // updates the images and numbers of each slot as needed
+        if (index > -1 && invMan.inventory[index][invMan.inventory[index].Length - 1] > 0) {
+            int i = 0; // the while() loops until i is the index of a status that is > 0
+            // if only two showing, find and display the images and numbers of the two choices > 0
+            if (invMan.inventory[index][invMan.inventory[index].Length - 1] == 2) {
+                sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+                for (int j = 0; j < 2 && i < 3; j++) {
+                    while (invMan.inventory[index][i] == 0) i++;
+                    sliderSlots[(index * 3) + j].GetComponentInChildren<TMP_Text>().text = "x" + invMan.inventory[index][i];
+                    sliderSlots[(index * 3) + j].GetComponentsInChildren<Image>()[1].sprite = sliderSprites[(index * 3) + i];
+                    i++;
+                }
+                // sliderSlots[index * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[index][i++];
+
+            // else if all three showing so display all three in the proper order
+            } else if (invMan.inventory[index][invMan.inventory[index].Length - 1] == 3) {
+                sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+                for (int j = 0; j < 3; j++) {
+                    sliderSlots[(index * 3) + j].GetComponentsInChildren<Image>()[1].sprite = sliderSprites[(index * 3) + j];
+                    sliderSlots[(index * 3) + j].GetComponentInChildren<TMP_Text>().text = "x" + invMan.inventory[index][j];
+                }
+            // else only one slot showing, so find which choice and display its image and number
+            } else {
+                while (invMan.inventory[index][i] == 0) i++;
+                sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+                sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].sprite = sliderSprites[(index * 3) + i];
+                sliderSlots[index * 3].GetComponentInChildren<TMP_Text>().text = "x" + invMan.inventory[index][i];
+            }
         }
     }
 
@@ -128,7 +171,6 @@ public class toolMenu : MonoBehaviour
         invBools[nextIndex(i)] = false;
         invBools[nextIndex(nextIndex(i))] = false;
         index = i;
-        invMan.curSlider = i;
     }
 
     // rotates the index from 0 -> 1 -> 2 -> 0 
