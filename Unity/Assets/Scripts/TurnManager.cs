@@ -520,7 +520,7 @@ public class TurnManager : MonoBehaviour
             destroyPlant();
             text ="Oh no, you lost a plant to disease!";
           }
-          cotyledonDiseaseRandomChanceText.text = text;
+          // cotyledonDiseaseRandomChanceText.text = text;
 
           text = "The weather looks good!";
           if(UnityEngine.Random.Range(0f, 1f) >= weatherChance)

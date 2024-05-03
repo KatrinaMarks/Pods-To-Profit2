@@ -126,6 +126,7 @@ public class HexGrid : MonoBehaviour
 		HexCoordinates coordinates = HexCoordinates.FromPosition(position);
 		int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
 		HexCell cell = cells[index];
+		Debug.Log(coordinates.X + ", " + coordinates.Z);
 		if (cell.terrainType == texture)
 		{
 			// Cell has already been colored with the same texture, return false

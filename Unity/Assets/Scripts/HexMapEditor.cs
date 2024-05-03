@@ -12,7 +12,7 @@ public class HexMapEditor : MonoBehaviour
     public HexGrid hexGrid;
     public TurnManager turnManager;
 
-    private int activeTexture;
+    public int activeTexture;
 
     void Awake()
     {
@@ -40,8 +40,12 @@ public class HexMapEditor : MonoBehaviour
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
                     {
                         lastHitPoint = hit.point;
+                        Debug.Log("activeTexture: " + activeTexture);
+                        Debug.Log("CheckColorCell !dragging: " + hexGrid.CheckColorCell(lastHitPoint, activeTexture));
                         if(hexGrid.CheckColorCell(lastHitPoint, activeTexture)){ // "object reference not set to an instance of an object"
+                            Debug.Log("before HandleInput()");
                         	HandleInput();
+                            Debug.Log("after HandleInput()");
 						}
                     }
                 }
@@ -53,10 +57,13 @@ public class HexMapEditor : MonoBehaviour
                     {
                         if (hit.point != lastHitPoint)
                         {
+                            Debug.Log("CheckColorCell dragging: " + hexGrid.CheckColorCell(lastHitPoint, activeTexture));
                             if (hexGrid.CheckColorCell(hit.point, activeTexture)) // "object reference not set to an instance of an object"
                             {
                                 lastHitPoint = hit.point;
+                                Debug.Log("before HandleInput()");
                                 HandleInput();
+                                Debug.Log("after HandleInput()");
                             }
                         }
                     }
