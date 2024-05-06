@@ -1,0 +1,484 @@
+InventoryManager.cs:
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400  10)     public TurnManager turnManager;
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400  11) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  19)     public int[][] inventory = new int[5][];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  20)     public int[][] shopPrices = new int[5][];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  21)     public int tillingCost = 7;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  22)     public int scoutingCost = 7;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  23) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  24)     string savedInput;
+aec09acb5 (HaydenParsons 2024-05-01 15:50:09 -0400  26)     public TMP_Text[] shopInvTexts = new TMP_Text[9];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  42) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  43)         /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  44)          * These are a bit complicated, but I'm gonna do my to explain how they're set up.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  45)          * The first index (row) is always the type of item (the side comments below) and the
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  46)          * second index (column) is the nth choice of that item, organized by status (org ->
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  47)          * con). The last column of each row is for the sliders in the toolbar, it is just
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  48)          * how many slots to display (see the explanation in toolMenu.cs).
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  49)          *
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  50)          * As a side note, the idea beheind using arrays for these, particularly shopPrices,
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  51)          * was to create an easy way to add more crops in future renditions of this game. In
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  52)          * theory, all you have to do is copy/paste the array and update the prices for that
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  53)          * crop. If you do add more crops, I would make a crop class and make shopPrices[] a
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  54)          * member variable, so you can update the functions to just index into the specific
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  55)          * class corresponding to whatever crop the player chose to plant that year.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  56)          *
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  57)          * Side note number two: I ran out of time, but I planned on making an third array,
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  58)          * structured the same way, for the yield percentages that come with each item. For
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  59)          * the same reasoning, this array could just be copy/paste/edited and would be in the
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  60)          * crop class.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  61)          */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  62) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  63)         /*                        1st      2nd     3rd     num                        */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  64)         inventory[0] = new int[4] {0,       0,      0,      0};     // seed
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  65)         /*                        1st      2nd     num                        */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  66)         inventory[1] = new int[3] {0,       0,      0};     // fert
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  67)         inventory[2] = new int[3] {0,       0,      0};     // fung
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  68)         inventory[3] = new int[3] {0,       0,      0};     // insc
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  69)         inventory[4] = new int[3] {0,       0,      0};     // herb
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  70) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  71)         // 0: seed : { organic (o), conventional (s), GMO (s) }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  72)         shopPrices[0] = new int[3] {-75,    -50,    -80};
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  73)         // 1: fert : { organic (o), inorganic (c) }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  74)         shopPrices[1] = new int[2] {-40,    -80};
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  75)         // 2: fung : { organic (o), inorganic (c) }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  76)         shopPrices[2] = new int[2] {-20,    -10};
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  77)         // 3: insc : { organic (o), inorganic (c) }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  78)         shopPrices[3] = new int[2] {-30,    -15};
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  79)         // 4: herb : { organic (o), inorganic (c) }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  80)         shopPrices[4] = new int[2] {-50,    -25};
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  91)     /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  92)      * Updates money variable and the money texts (both in the top UI bar, just one for in
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  93)      * the main screen and another for in the shop screen) as necessary.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  94)      *
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  95)      * As a side note/warning, this function was originally used by the old shopButtonFunc()
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  96)      * in TurnManager.cs, but we completely changed how the shop and inventory work so I
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  97)      * wrote a different function that the shop buttons call, changeInventory(), which is
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  98)      * defined below. The original version of this function returned a bool dependant upon
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  99)      * whether the player had enough money left to make the purchase. This check is already
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 100)      * handled in changeInventory() so I deleted that and made this return void instead.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 101)      * We had not used shopButtonFunc() at all anymore, but I didn't change the return type
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 102)      * until the day before our showcase, so this may cause warnings that I did not think of
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 103)      * and could not find in the short time I had left. If this function is giving some error,
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 104)      * this is the first thing that I would check.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 105)      */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 106)     public void changeMoney(float amount) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 107)         money += amount;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 112)     /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 113)      * The parameter is a string because only functions with one parameter show up in the
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 114)      * Unity editor... for whatever reason... and I figured using one string to hold all the
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 115)      * needed parameters would be way easier than programming onClick for each button. There
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 116)      * very well could be a smarter workaround, but this was the best I could think of.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 118)      * The string holds four total parameters, which are all self explanatory, but I'll
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 119)      * define them here anyways:
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 120)      * type : index for the row of inventory[] and shopPrices[]
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 121)      * choice : index for the column of inventory[] and shopPrices[]
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 122)      * sign : add or subtract from inventory[]
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 123)      * amount : the amount to be added/subtracted to/from inventory[]
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 125)     public void changeInventory(string typeChoiceStatusAmount) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 126)         /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 127)          * if the input string is "!" then this is from a warning popup where the player has
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 128)          * clicked the "ok" button, which essentially just reruns this function after the
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 129)          * farming status has been downgraded to not flag the error again -- is like this
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 130)          * so the player doesn't have to click "buy" again after saying ok to the popup
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 131)          */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 132)         if (typeChoiceStatusAmount == "!") {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 133)             typeChoiceStatusAmount = savedInput;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 134)         }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 135)         int type = typeChoiceStatusAmount[0] - '0';
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 136)         int choice = typeChoiceStatusAmount[1] - '0';
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 137)         int status = typeChoiceStatusAmount[2] - '0';
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 138)         char sign = typeChoiceStatusAmount[3];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 139)         int amount = Int32.Parse(typeChoiceStatusAmount.Substring(4));
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 140) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 141)         /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 142)          * If negative amount, also need to have enough in inventory, or if positive amount,
+aec09acb5 (HaydenParsons 2024-05-01 15:50:09 -0400 145)         // bool warning = false;
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 146)         if (sign == '+') {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 147)             if (money >= (amount * shopPrices[type][choice])) {
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 148)                 // there will probably need to be more here that depends on how the player interacts with the warning:
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 149)                 //      if "ok":    continue to money-- and inv++
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 150)                 //      if "back":  break;
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 151)                 // if implemented like this, remove the "else" so break; would just jump out of if(money) to skip money-- and inv++... I think...
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 152) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 153)                 // either that or we just have the "ok" button essentially recall this function
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 154)                 //      theoretically would work since farmingStatus should already have been updated (race condition?)
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 155) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 156)                 if (turnManager.farmingStatus < status) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 157)                     savedInput = typeChoiceStatusAmount;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 158)                     turnManager.GiveShopWarning(status);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 159)                 } else {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 160)                     if (type <= 1 && inventory[type][choice] == 0) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 161)                         // Debug.Log("num++: " + inventory[type][inventory[type].Length - 1]);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 162)                         inventory[type][inventory[type].Length - 1]++;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 163)                     } else if (type > 1) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 164)                         // Debug.Log("index: " + (((type - 2) * 2) + choice));
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 165)                         shopInvTexts[((type - 2) * 2) + choice].text = "x" + inventory[type][choice] + " in Inventory";
+aec09acb5 (HaydenParsons 2024-05-01 15:50:09 -0400 166)                     }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 167)                     changeMoney(amount * shopPrices[type][choice]);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 168)                     inventory[type][choice] += amount;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 169)                     Debug.Log("t: " + type + " ; c: " + choice + " ; inv: " + inventory[type][choice]);
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 170)                 }
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 171)             } else {
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 172)                 // error message: "Not enough money"
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 173)             }
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 174) 
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 175)         } else {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 176)             if (inventory[type][choice] >= amount) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 177)                 inventory[type][choice] -= amount;
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 178)             } else {
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 179)                 // error message: "Not enough of {item} in inventory"
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 180)             }
+bd677371f (HaydenParsons 2024-04-15 23:14:11 -0400 181)         }
+
+shopScreen.cs:
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  6) /*
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  7)  * This script is just to control which display is showing in the shop when the user goes to 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  8)  * it. For example, when the user goes to the shop after the first prompt in the planting stage,
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  9)  * they need to buy seeds so the seeds display is active, but later the player may return to the 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 10)  * shop after a prompt to buy fungicides and thus the agrochemicals display will be active with
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 11)  * the fungicide subdisplay. 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 12)  */
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 16)      * display indecies:
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 25)     int curIndex = 1;   // current index -- this needs to match the index of the starting display
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 26)     /*
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 27)      * subdisplay indecies:
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 28)      * 0 = fungicide
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 29)      * 1 = insecticide
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 30)      * 2 = herbicide
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 31)      */
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 32)     public GameObject[] subdisplayObjects = new GameObject[3];
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 33)     public Button[] subdisplayButtons = new Button[3];
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 34)     int curSubIndex = 0;   // current subdisplay index -- this needs to match the index of the starting subdisplay
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 35)     
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 62) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 63)     public void updateSubdisplay(int index) {
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 64)         // hides the current subdisplay
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 65)         subdisplayObjects[curSubIndex].SetActive(false);
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 66)         // shows the new subdisplay
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 67)         subdisplayObjects[index].SetActive(true);
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 68)         // updates the current index so the next call hides the current subdisplay appropiately
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 69)         curSubIndex = index;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 70)     }
+
+stageProgressBar.cs:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400   6) /*    
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400   7)  * This script is what controls the stage progress bar (progBar) in the upper right corner 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400   8)  * of the UI. More accurately, it moves the object that covers the gradient bar behind it.
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400   9)  * Each pipe in the graphic below is a location that the progBar jumps to. The pipes outside
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  10)  * of the cells are the positions for each of the 6 stages following preplant, which is not
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  11)  * shown in the progBar. The pipes inside the cells are the positions for each event that 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  12)  * happens during that stage. The "events" are pretty much just the popups/decisions that the 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  13)  * player has to go through or make during that stage. For example, the first cell is the 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  14)  * Planting stage, which has two events: buying seeds and tilling. So, there are two pipes.
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  15)  *
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  16)  *             Cotyledon               Fertilizer              Harvest 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  17)  *                 |                       |                      |
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  18)  *        /-----\  |  /-----\     /-----\  |  /-----\     /-----\ |
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  19)  *       /  | |  \---/   |   \---/ | | | \---/  | |  \---/ | | | \|
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  20)  *      |\  | |  /---\   |   /---\ | | | /---\  | |  /---\ | | | /
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  21)  *      | \-----/     \-----/  |  \-----/     \-----/  |  \-----/
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  22)  *      |                      |                       |
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  23)  *   Planting              Vegatative             Reproductive 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  24)  * 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  25)  * Here are the events that I currently have for each stage:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  26)  *  - Planting:     seeds, till
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  27)  *  - Cotyledon:    fungicide
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  28)  *  - Vegatative:   scout, pesticide, disease
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  29)  *  - Fertilizer:   fertilizer, irrigation
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  30)  *  - Reproductive: insects, disease, weather
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  31)  */
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  32) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  33) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  36)     public TurnManager turnManager;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  37)     public InventoryManager inventoryManager;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  40)     /*
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  41)      * The positions[] array is full of the x coordinates for each pipe in the graphic
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  42)      * The array is filled in the "Inspector" tab in unity so that the number of events
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  43)      * can be easily changed without having to change the code too much. 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  44)      */
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  45)     public float[] positions = new float[17];
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  46)     int index = 0;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  47)     /*
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  48)      * The stagePositions[] array is essentially the same thing as positions[] but only
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  49)      * for the outer pipes (i.e. the x coordinate of each phase)
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  50)      */
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  51)     float[] stagePositions = new float[6];
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  52)     int stageIndex = 0;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  53) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  54)     [Header ("Planting Stage Variables")]
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  55)     public bool seedBought = false;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  56)     public bool tilled = false;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  57) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  58)     [Header ("Cotyledon Stage Variables")]
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  59)     public bool fertBought = false;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  60) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  61)     [Header ("Vegatative Stage Variables")]
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  62)     public bool inscBought = false;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  63)     public bool fungBought = false;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  64) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  68)         stagePositions[0] = 773;        // Planting
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  69)         stagePositions[1] = 831;        // Cotyledon
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  70)         stagePositions[2] = 901;        // Vegatative
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  71)         stagePositions[3] = 971;        // Fertilizer
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  72)         stagePositions[4] = 1041;       // Reproductive
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  73)         stagePositions[5] = 1111;       // Harvest
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  80)     }
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  81) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  82)     public void checkNextStage(int i) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  83)         /* 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  84)          * i is the event index of the current phase. It is essentially the index of the pipes
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  85)          * inside the cells in the graphic above. 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  86)          */
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  87)         switch (turnManager.current) {
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  88)             // each case follows the exact same logic as this one
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  89)             case TurnPhase.Planting:
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  90)                 // if the player buys seeds for the first time in Planting phase, advance progBar
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  91)                 if (i == 0 && !seedBought) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  92)                     seedBought = true;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  93)                     nextStage();
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  94)                 // if the player tills for the first time in Planting phase, advance progBar
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  95)                 } else if (i == 1 && !tilled) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  96)                     tilled = true;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  97)                     nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  98)                 }
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400  99)                 break;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 100) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 101)             case TurnPhase.Cotyledon:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 102)                 if (!fertBought) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 103)                     fertBought = true;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 104)                     nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 105)                 }
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 106)                 break;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 107) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 108)             case TurnPhase.Vegatative:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 109)                 if (i == 0 && !inscBought) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 110)                     inscBought = true;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 111)                     nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 112)                 } else if (i == 1 && !fungBought) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 113)                     fungBought = true;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 114)                     nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 115)                 }
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 116)                 break;
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 117)             /*
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 118)              * These two phases don't have individual pop-ups implemented for them yet, just 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 119)              * the original screen with all events on it, so just advance the progBar all the
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 120)              * way through each event in the respective phase. Assuming nothing changes with
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 121)              * the events (the number of them or what they are), these two phases should also
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 122)              * follow the exact same logic as those above. 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 123)              */
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 124)             case TurnPhase.Fertilizer:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 125)                 nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 126)                 nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 127)                 break;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 128)             case TurnPhase.Reproductive:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 129)                 nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 130)                 nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 131)                 nextStage();
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 132)                 break;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 133) 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 134)             default:
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 135)                 break;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 136)         }
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 137)     }
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 139)     // moves the progBar to the next position in the array, cycling back to the start if needed
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 140)     public void nextStage() {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 141)         index++;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 142)         if (index == positions.Length) index = 0;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 143)         progBar.transform.localPosition = new Vector3(positions[index], progBar.transform.localPosition.y, 0);
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 144)     }
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 146)     /*
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 147)      * I haven't implemented them anywhere yet, but the idea behind these was to have a way to 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 148)      * jump to either the next phase or a specific phase without having to click through all the
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 149)      * stuff in between -- would be just a dev tool, not an actual feature 
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 150)      */
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 151)     public void setPhasePosition(int i) {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 152)         progBar.transform.localPosition = new Vector3(stagePositions[index], progBar.transform.localPosition.y, 0);
+30d6e05f0 (HaydenParsons 2024-04-18 00:45:23 -0400 154) 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 155)     public void nextPhasePosition() {
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 156)         stageIndex++;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 157)         if (stageIndex == 6) stageIndex = 0;
+f96779b69 (HaydenParsons 2024-04-30 22:01:34 -0400 158)         progBar.transform.localPosition = new Vector3(stagePositions[stageIndex], progBar.transform.localPosition.y, 0);
+30d6e05f0 (HaydenParsons 2024-04-18 00:45:23 -0400 159)     }
+
+tempArrow.cs:
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  5) /*
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  6)  * This script is really simple right now because we did not end up implementing weather,
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  7)  * but its purpose is to just rotate the arrow in the temperature gauge in the middle in
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  8)  * the top UI bar depending on the current temperature of the weather. As it is right now,
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  9)  * 0F is parallel pointing to the blue on the left and 100F is parallel pointing to the 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 10)  * red on the right. I'm writing this explanation two months or so after I originally wrote
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 11)  * this code, so take that 0 - 100 scale with a grain of salt. When y'all do implement 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 12)  * weather, I would update this range and maybe even add in subranges (one for each color)
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 13)  * that correspond to the temperatures for the crops -- if soybeans start losing yield in 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 14)  * temperatures under 40F or over 90F, have the green range from 40F - 90F instead of the 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 15)  * default 33F - 67F scale that it's at right now.
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 16)  */
+
+toolMenu.cs:
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400   7) /*
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400   8)  * This script deals with the tool menu in the bottom right corner. The tool menu 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400   9)  * "extension" is the upper six hexagons, which slide up and down by clicking on the 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  10)  * cog wheel button. The idea behind the left three hexagons of the extension was to be 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  11)  * a way to show the inventory, so when one is clicked, a "slider" comes out from behind 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  12)  * it and shows the number of each status currently in the inventory. Each slider has 3
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  13)  * total slots (one for each status), but only one slot shows at a time unless the player
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  14)  * has items of more than one status. For example, if the player only has sustainable
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  15)  * seeds, then when the "seeds" button is clicked, only one slot shows with the number
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  16)  * of sustainable seeds, but if the player then buys conventional seeds, the slider then
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  17)  * moves further out to reveal another slot with the number of conventional seeds.
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  18)  *
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  19)  * As a side note, I liked the idea of this when I made it at the very beginning of the 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  20)  * semester, but now at the end I don't really see a need for it. If y'all do decide to keep
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  21)  * the feature, you will need to expand upon it because as of now there are only three 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  22)  * sliders: pesticides, seeds, and fertilizer. This was all we had at the beginning, but we
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  23)  * decided to add back in the different types of pesticides (fungicide, insecticide, and 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  24)  * herbicide), so you'll have to do something to accomodate for these. 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  25)  *
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  26)  * On top of the number of sliders no longer matching the number of items in the inventory,
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  27)  * there are also a couple unnused slots that just have buttons recycled from the old code
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  28)  * but are not actually used for anyting (tool and sell). 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  29)  */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  39)     int index = -1; // -1 = none open ; 0 = seed ; 1 = fert ; 2 = pest
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  50)     /* 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  51)      * I have no idea how I got the coordinates for upPos and downPos, but when using 
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  59)      */
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  60) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  65) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  66)     /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  67)      * 0 - 2 = seed slots 1 - 3
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  68)      * 3 - 5 = fert slots 1 - 3
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  69)      * 6 - 8 = pest slots 1 - 3
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  70)      */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  71)     public GameObject[] sliderSlots = new GameObject[9];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  72) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  73)     /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  74)      * I don't yet have the actual sprites for the three choices of seeds, so when you get
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  75)      * them you will need to attach them here as well as putting them in the seeds display
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  76)      * in the shop screen. The code using these is already written and working
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  77)      */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  78)     public Sprite[] sliderSprites = new Sprite[5];
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400  80) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  90)         // Moves the tool menu extension up/down depending on menuBool
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  97)             index = -1;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 102)         // moves the indexed slider out/in depending on its bool 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 103)         if (index > -1 && invBools[index] == false) {
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 105)             if (sliders[index].transform.localPosition.x < 1033)    
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 106)                 sliders[index].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 108)             if (sliders[nextIndex(index)].transform.localPosition.x < 1033)             
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 109)                 sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 110)             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 111)                 sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 112)         } else if (index > -1 && invBools[index] == true) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 114)             if (invMan.inventory[index][invMan.inventory[index].Length - 1] <= 1) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 115)                 pos = showOne;      
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 116)             } else if (invMan.inventory[index][invMan.inventory[index].Length - 1] == 2) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 117)                 pos = showTwo;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 118)             } else {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 119)                 pos = showThree;    
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 120)             }                                                                            
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 123)             if (sliders[index].transform.localPosition.x > pos)     
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 124)                 sliders[index].transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 126)             if (sliders[nextIndex(index)].transform.localPosition.x < 1033)             
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 127)                 sliders[nextIndex(index)].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 128)             if (sliders[nextIndex(nextIndex(index))].transform.localPosition.x < 1033)  
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 129)                 sliders[nextIndex(nextIndex(index))].transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 131) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 132)         // updates the images and numbers of each slot as needed
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 133)         if (index > -1 && invMan.inventory[index][invMan.inventory[index].Length - 1] > 0) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 134)             int i = 0; // the while() loops until i is the index of a status that is > 0
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 135)             // if only two showing, find and display the images and numbers of the two choices > 0
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 136)             if (invMan.inventory[index][invMan.inventory[index].Length - 1] == 2) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 137)                 sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 138)                 for (int j = 0; j < 2 && i < 3; j++) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 139)                     while (invMan.inventory[index][i] == 0) i++;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 140)                     sliderSlots[(index * 3) + j].GetComponentInChildren<TMP_Text>().text = "x" + invMan.inventory[index][i];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 141)                     sliderSlots[(index * 3) + j].GetComponentsInChildren<Image>()[1].sprite = sliderSprites[(index * 3) + i];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 142)                     i++;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 143)                 }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 144)                 // sliderSlots[index * 3].GetComponentInChildren<TMP_Text>().text = "x" + inventory[index][i++];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 145) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 146)             // else if all three showing so display all three in the proper order
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 147)             } else if (invMan.inventory[index][invMan.inventory[index].Length - 1] == 3) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 148)                 sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 149)                 for (int j = 0; j < 3; j++) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 150)                     sliderSlots[(index * 3) + j].GetComponentsInChildren<Image>()[1].sprite = sliderSprites[(index * 3) + j];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 151)                     sliderSlots[(index * 3) + j].GetComponentInChildren<TMP_Text>().text = "x" + invMan.inventory[index][j];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 152)                 }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 153)             // else only one slot showing, so find which choice and display its image and number
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 154)             } else {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 155)                 while (invMan.inventory[index][i] == 0) i++;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 156)                 sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].enabled = true;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 157)                 sliderSlots[index * 3].GetComponentsInChildren<Image>()[1].sprite = sliderSprites[(index * 3) + i];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 158)                 sliderSlots[index * 3].GetComponentInChildren<TMP_Text>().text = "x" + invMan.inventory[index][i];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 159)             }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 160)         }
+dffc6cbef (HaydenParsons 2024-05-01 21:25:56 -0400 163)     // the cog wheel button calls this function, which just toggles the extension up and down
+
+TurnManager.cs:
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400   62)     public GameObject ShopOrgToConvWarning;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400   63)     public GameObject ShopOrgToSusWarning;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400   64)     public GameObject ShopSusToConWarning;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400   65) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  351)     // public void buyTractor(GameObject button)
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  352)     // {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  353)     //   if(inventory.changeMoney(-10000))
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  354)     //   {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  355)     //     inventory.ownTractor = true;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  356)     //     button.SetActive(false);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  357)     //     updatePerks("Tractor");
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  358)     //   }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  359)     // }
+86f7e7f8f (HaydenParsons 2024-05-03 00:47:52 -0400  523)           // cotyledonDiseaseRandomChanceText.text = text;
+aec09acb5 (HaydenParsons 2024-05-01 15:50:09 -0400  802)         Debug.Log("tilling() inv.changeMoney()");
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  803)         inventory.changeMoney(perSeedBasePlantPrice * -1);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400  804)         return true;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1018)     /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1019)      * This is literally just a copy of GiveWarning() that Kat wrote, I just needed a
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1020)      * seperate function to handle the shop warnings so I didn't have to change 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1021)      * GiveWarning() and add a bunch of stuff elsewhere. If (when) you add warnings 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1022)      * elsewhere, I would get rid of this function and make the necessary changes and 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1023)      * additions so that GiveWarning() checks the stage/screen to know which warning to
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1024)      * activate. You need different warnings for each one because the warnings to 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1025)      * different things depending on when they're given, even if in-game they look the 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1026)      * exact same (the buttons call differnt functions). 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1027)      *
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1028)      * If you can't tell, I've already thought through exactly how I would do
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1029)      * this, so if you want my input, just reach out.
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1030)      */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1031)     public void GiveShopWarning(int potentialStatus) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1032)     {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1033)       // If the potential new status is greater than current farming status set warning to active
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1034)       // Remember org = 0, sus = 1, and con = 2 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1035) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1036)       // If status is organic and potential status is conventional
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1037)       if(farmingStatus == 0 & potentialStatus >= 2)
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1038)       {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1039)         ShopOrgToConvWarning.SetActive(true);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1040)       }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1041) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1042)       // If status is organic and potential status is sustainable
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1043)       else if(farmingStatus == 0 & potentialStatus >= 1 & potentialStatus < 2)
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1044)       {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1045)         ShopOrgToSusWarning.SetActive(true);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1046)       }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1047) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1048)       // If status is sustainable and potential status is conventional 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1049)       else if(farmingStatus == 1 & potentialStatus >= 2)
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1050)       {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1051)         ShopSusToConWarning.SetActive(true);
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1052)       }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1053)     }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1054) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1055)     /*
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1056)      * This just sets the farmingStatus to whatever is fed into it. Right now it's just 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1057)      * used by the shop warnings, but it will probably be needed if you add any other 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1058)      * warnings elsewhere  
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1059)      */
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1060) 
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1061)     public void setFarmingStatus(int status) {
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1062)       farmingStatus = status;
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1063)       statusText.text = statuses[farmingStatus];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1064)       statusText.color = statusColors[farmingStatus];
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1065)     }
+2fb18a6c2 (HaydenParsons 2024-05-02 23:39:43 -0400 1066) 
