@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+/* (HP)
+ * Didn't write this script, but I'm pretty sure this is just the logic for the buttons in 
+ * the initial title screen and the screens with the backstory. 
+ */
 public class TitleButtons : MonoBehaviour
 {
     public GameObject[] dots;

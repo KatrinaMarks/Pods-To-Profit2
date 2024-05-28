@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/*    
+/* (HP)
  * This script is what controls the stage progress bar (progBar) in the upper right corner 
  * of the UI. More accurately, it moves the object that covers the gradient bar behind it.
  * Each pipe in the graphic below is a location that the progBar jumps to. The pipes outside
@@ -37,14 +37,14 @@ public class stageProgressBar : MonoBehaviour
     public InventoryManager inventoryManager;
     public GameObject progBar;
 
-    /*
+    /* (HP)
      * The positions[] array is full of the x coordinates for each pipe in the graphic
      * The array is filled in the "Inspector" tab in unity so that the number of events
      * can be easily changed without having to change the code too much. 
      */
     public float[] positions = new float[17];
     int index = 0;
-    /*
+    /* (HP)
      * The stagePositions[] array is essentially the same thing as positions[] but only
      * for the outer pipes (i.e. the x coordinate of each phase)
      */
@@ -80,7 +80,7 @@ public class stageProgressBar : MonoBehaviour
     }
 
     public void checkNextStage(int i) {
-        /* 
+        /* (HP)
          * i is the event index of the current phase. It is essentially the index of the pipes
          * inside the cells in the graphic above. 
          */
@@ -114,7 +114,7 @@ public class stageProgressBar : MonoBehaviour
                     nextStage();
                 }
                 break;
-            /*
+            /* (HP)
              * These two phases don't have individual pop-ups implemented for them yet, just 
              * the original screen with all events on it, so just advance the progBar all the
              * way through each event in the respective phase. Assuming nothing changes with
@@ -143,7 +143,7 @@ public class stageProgressBar : MonoBehaviour
         progBar.transform.localPosition = new Vector3(positions[index], progBar.transform.localPosition.y, 0);
     }
 
-    /*
+    /* (HP)
      * I haven't implemented them anywhere yet, but the idea behind these was to have a way to 
      * jump to either the next phase or a specific phase without having to click through all the
      * stuff in between -- would be just a dev tool, not an actual feature 

@@ -23,6 +23,15 @@ using TMPro;
  *
  * FUTURE WORK:
  * Add a yield percentage to cells, use it at the end to calculate the actual yield. Currently cheating and just changing the overall yield when cell's should have an individual effect.
+ *
+ * (HP)
+ * This comment is from the group before Kat and I, but I'm ngl everything it says still 
+ * rings mostly true. I didn't work on this script much and it's now late May so my memory
+ * may be a bit off, but there's quite a lot in this script that we just don't use anymore.
+ * Most of the outdated stuff are old variables that are useless because of the new inventory
+ * arrays, but even a function or two are obsolete now. I left everything in because I think
+ * a lot of the old stuff could be reused once y'all start implementing more tools and the
+ * functionality of the buyables that I talk about in the header comment to InventoryManager
  */
 public class TurnManager : MonoBehaviour
 {

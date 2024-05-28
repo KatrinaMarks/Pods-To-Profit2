@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* (HP)
+ * This is what gives the "!" of the warning pop-ups the shaking movement. Kat wrote this 
+ * script so I don't know the specifics of how everything works, but at first glance it 
+ * looks pretty simple
+ */
 public class Shaker : MonoBehaviour
 {
     Vector3 initPos;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
+/* (HP)
  * This script is really simple right now because we did not end up implementing weather,
  * but its purpose is to just rotate the arrow in the temperature gauge in the middle in
  * the top UI bar depending on the current temperature of the weather. As it is right now,

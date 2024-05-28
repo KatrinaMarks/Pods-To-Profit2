@@ -4,9 +4,6 @@ using UnityEngine.EventSystems;
 /* Currently allows us to interact with the map, will be replaced by actual gameplay */
 public class HexMapEditor : MonoBehaviour
 {
-
-    // I've tried declaring and initializing this different ways to try to get the warning 
-    // to stop when it's called in Awake() but it wont and idfk why
     public int[] textures = new int[6]; 
 
     public HexGrid hexGrid;
@@ -111,6 +108,6 @@ public class HexMapEditor : MonoBehaviour
         if (textures.Length > 0)
             activeTexture = textures[index];
         else
-            Debug.Log("Awake() throwing out of range exception"); // even when initialized... why is this even called in Awake()? When even is Awake() called?
+            Debug.Log("Awake() throwing out of range exception");
     }
 }

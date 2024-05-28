@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-/*
+/* (HP)
  * This script is just to control which display is showing in the shop when the user goes to 
  * it. For example, when the user goes to the shop after the first prompt in the planting stage,
  * they need to buy seeds so the seeds display is active, but later the player may return to the 
@@ -12,7 +12,7 @@ using UnityEngine.UI;
  */
 public class shopScreen : MonoBehaviour
 {
-    /*
+    /* (HP)
      * display indecies:
      * 0 = all
      * 1 = seeds
@@ -23,7 +23,7 @@ public class shopScreen : MonoBehaviour
     public GameObject[] displayObjects = new GameObject[5];
     public Button[] displayButtons = new Button[5];
     int curIndex = 1;   // current index -- this needs to match the index of the starting display
-    /*
+    /* (HP)
      * subdisplay indecies:
      * 0 = fungicide
      * 1 = insecticide

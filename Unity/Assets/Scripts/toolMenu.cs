@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/*
+/* (HP)
  * This script deals with the tool menu in the bottom right corner. The tool menu 
  * "extension" is the upper six hexagons, which slide up and down by clicking on the 
  * cog wheel button. The idea behind the left three hexagons of the extension was to be 
@@ -47,7 +47,7 @@ public class toolMenu : MonoBehaviour
     int showTwo = 735;
     int showThree = 595;
 
-    /* 
+    /* (HP)
      * I have no idea how I got the coordinates for upPos and downPos, but when using 
      * transform.position = upPos or = downPos, these are the coordinates that made them
      * match the coordinates they actually needed to be, which are upPos2 and downPos2.
@@ -70,7 +70,7 @@ public class toolMenu : MonoBehaviour
      */
     public GameObject[] sliderSlots = new GameObject[9];
 
-    /*
+    /* (HP)
      * I don't yet have the actual sprites for the three choices of seeds, so when you get
      * them you will need to attach them here as well as putting them in the seeds display
      * in the shop screen. The code using these is already written and working
